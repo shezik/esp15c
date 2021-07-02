@@ -1,0 +1,5 @@
+# Ignore Arduino build cache directory
+/build/**
+
+# Ignore VSCode specific files
+.vscode/
