@@ -1,6 +1,6 @@
 #include "hpcalc.h"
 
-HPCalc::HPCalc(){
+HPCalc::HPCalc() {
 
 }
 
@@ -8,53 +8,101 @@ void HPCalc::init(DisplayDriver* dv) {
 
     _display = dv;
     nv = nut_new_processor(80, NULL);
-    File objFile = LittleFS.open("/15c.obj", "r");
+    nut_read_object_file(nv, "/15c.obj");
 
-    if(!this.loadState()) {
-        this.processKeypress(24);  // auto on
-        this.processKeypress(-1);
-        this.processKeypress(129);  // backspace key, clears Pr Error
-        this.processKeypress(-1);
+    if (!loadState()) {
+        processKeypress(24);  // auto on
+        processKeypress(-1);
+        processKeypress(129);  // backspace key, clears Pr Error
+        processKeypress(-1);
     } else {
-        this.processKeypress(24);  // auto on
-        this.processKeypress(-1);
-        this.processKeypress(24);  // auto on again
-        this.processKeypress(-1);
+        processKeypress(24);  // auto on
+        processKeypress(-1);
+        processKeypress(24);  // auto on again
+        processKeypress(-1);
         // !! why do we need to toggle power state twice?
     }
 
 }
 
-void saveState(){
+void saveState() {
+    File saveFile = LittleFS.open("/save.bin", "w+");
 
+    saveFile.close();
 }
 
-bool loadState(){
-
+bool loadState() {
+    File saveFile = LittleFS.open("/save.bin", "r");
+    
+    if(!saveFile){return false};
+    
+    saveFile.close();
+    return true;
 }
 
-void processKeypress(int code){
-
+void processKeypress(int code) {
+    keyQueue.queueKeycode(code);
 }
 
-bool keyBufferIsEmpty(){
-
+bool keyBufferIsEmpty() {
+    return keyQueue.count() > 0 ? false : true;
 }
 
 void tick(){
+    static int n = 0;
+    readKeys();
+    executeCycle();
+    if (n++ % 2 == 0) {
+        updateDisplay();
+        n = 0;
+    }
+}
+
+void updateDisplay() {
 
 }
 
-void updateDisplay(){
+void executeCycle() {
+    int i = 500;
+    while (i-- > 0) {
+        nut_execute_instruction(nv);
+    }
+}
+
+char* getDisplayString() {
 
 }
 
-char* getDisplayString(){
+void readKeys() {
+    static int delay = 0;
+    int key;
 
-}
+    if (delay) {
+        delay--;
+    } else {
+        if (keyQueue.count()) {
+            key = keyQueue.getLastKeycode();
+            keyQueue.removeLastKeycode();
+            if (key >= 0) {
+                nut_press_key(nv, key);
+            } else {
+                nut_release_key(nv);
+            }
 
-void readKeys(){
-
+            if (key == -1) {
+                if (keyQueue.count()) {
+                    key = keyQueue.getLastKeycode();
+                    keyQueue.removeLastKeycode();
+                    if (key >= 0) {
+                        nut_press_key(nv, key);
+                    } else {
+                        nut_release_key(nv);
+                    }
+                    delay = 1;
+                }
+            }
+        }
+    }
 }
 
 /*

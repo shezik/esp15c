@@ -6,6 +6,6 @@ class DisplayDriver {
 
     public:
     
-}
+};
 
 #endif

@@ -1748,58 +1748,39 @@ void do_event_int(nut_reg_t *nut_reg, event_t event)
 	voyager_display_event_fn (nut_reg, event);
 }
 
-bool nut_read_object_file (nut_reg_t *nut_reg, const char *fn)
+bool nut_read_object_file (nut_reg_t *nut_reg, const char *filename)
 {
-	FILE *f;
+	File f;
 	int bank;
 	int addr;  // should change to addr_t, but will have to change
 			   // the parse function profiles to match.
 	rom_word_t opcode;
-	int count = 0;
+	//int count = 0;
 	char buf [80];
-	char magic [4];
 	bool eof, error;
 	
-	f = fopen (fn, "rb");
+	f = LittleFS.open(filename, "r");
 	if (! f)
     {
 		fprintf (stderr, "error opening object file\n");
 		return (false);
     }
 	
-	if (fread_bytes (f, magic, sizeof (magic), & eof, & error) != sizeof (magic))
+	while (f.readBytesUntil('\n', buf, sizeof(buf)))  // Expect file to use Unix-style LF as EOL character
     {
-		fprintf (stderr, "error reading object file\n");
-		return (false);
-    }
-	
-	//if (strncmp (magic, "MOD1", sizeof (magic)) == 0)
-	//	return sim_read_mod1_file (sim, f);
-	
-	f = freopen (fn, "r", f);
-	
-	if (! f)
-    {
-		fprintf (stderr, "error reopening object file\n");
-		return (false);
-    }
-	
-	while (fgets (buf, sizeof (buf), f))
-    {
-		trim_trailing_whitespace (buf);
+		trim_trailing_whitespace (buf);  // ...EOL characters and other useless stuff will be discarded here anyhow
 		if (! buf [0])
 			continue;
 		if (nut_parse_object_line (buf, & bank, & addr, & opcode))
 		{
 			if (! nut_write_rom (nut_reg, bank, addr, & opcode))
 				fatal (3, "can't load ROM word at bank %d address %o\n", bank, addr);
-			count++;
+			//count++;
 		}
     }
 	
-#if 0
-	fprintf (stderr, "read %d words from '%s'\n", count, fn);
-#endif
+	//fprintf (stderr, "read %d words from '%s'\n", count, filename);
+	f.close();
 	return (true);
 }
 

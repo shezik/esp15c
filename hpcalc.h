@@ -3,17 +3,18 @@
 
 #include "proc_nut.h"
 #include "DisplayDriver.h"
-#include <LittleFS.h>
+#include "KeyQueue.h"
 
 //#define NNPR_CLOCK 215000.0
 //#define NNPR_WSIZE 56.0
 
 class HPCalc {
     protected:
-        DisplayContent _display;
+        DisplayDriver _display;
         nut_reg_t nv;
-        int keyQueue[32];  // !! 32 is probably enough. I don't feel like dealing with dynamic allocation and stuff.
+        KeyQueue keyQueue;  // !! 32 is probably enough. I don't feel like dealing with dynamic allocation.
     public:
+        HPCalc();
         void init(DisplayDriver* dv);
         void saveState();
         bool loadState();
@@ -21,6 +22,7 @@ class HPCalc {
         bool keyBufferIsEmpty();
         void tick();
         void updateDisplay();
+        void executeCycle();
         char* getDisplayString();
         void readKeys();
 };
