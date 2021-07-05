@@ -4,10 +4,10 @@ HPCalc::HPCalc() {
 
 }
 
-void HPCalc::init(DisplayDriver* dv) {
+void HPCalc::init(DispInterface *dv) {
 
     _display = dv;
-    nv = nut_new_processor(80, NULL);
+    nv = nut_new_processor(80, nullptr);
     nut_read_object_file(nv, "/15c.obj");
 
     if (!loadState()) {
@@ -25,30 +25,32 @@ void HPCalc::init(DisplayDriver* dv) {
 
 }
 
-void saveState() {
+void HPCalc::saveState() {
     File saveFile = LittleFS.open("/save.bin", "w+");
 
     saveFile.close();
 }
 
-bool loadState() {
+bool HPCalc::loadState() {
     File saveFile = LittleFS.open("/save.bin", "r");
     
-    if(!saveFile){return false};
+    if(!saveFile){
+        return false;
+    };
     
     saveFile.close();
     return true;
 }
 
-void processKeypress(int code) {
+void HPCalc::processKeypress(int code) {
     keyQueue.queueKeycode(code);
 }
 
-bool keyBufferIsEmpty() {
+bool HPCalc::keyBufferIsEmpty() {
     return keyQueue.count() > 0 ? false : true;
 }
 
-void tick(){
+void HPCalc::tick(){
     static int n = 0;
     readKeys();
     executeCycle();
@@ -58,22 +60,22 @@ void tick(){
     }
 }
 
-void updateDisplay() {
+void HPCalc::updateDisplay() {
 
 }
 
-void executeCycle() {
+void HPCalc::executeCycle() {
     int i = 500;
     while (i-- > 0) {
         nut_execute_instruction(nv);
     }
 }
 
-char* getDisplayString() {
+char* HPCalc::getDisplayString() {
 
 }
 
-void readKeys() {
+void HPCalc::readKeys() {
     static int delay = 0;
     int key;
 

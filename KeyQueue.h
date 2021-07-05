@@ -3,6 +3,8 @@
 
 #define KeyQueueMaxSize 32
 
+#include <Arduino.h>  // for uint8_t definition
+
 class KeyQueue
 {
     private:

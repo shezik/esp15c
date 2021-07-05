@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "Keyboard_10x4_MCP23016.h"
 #include <ESP8266WiFi.h>
 #include <Wire.h>
