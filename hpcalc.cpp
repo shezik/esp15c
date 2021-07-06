@@ -1,13 +1,14 @@
 #include "hpcalc.h"
 
-HPCalc::HPCalc() {
-
+HPCalc::HPCalc(DispInterface *dv)
+    :display(dv)
+{
+    // do nothing
 }
 
-void HPCalc::init(DispInterface *dv) {
+void HPCalc::init() {
+    nv = nut_new_processor(80, display);
 
-    _display = dv;
-    nv = nut_new_processor(80, nullptr);
     nut_read_object_file(nv, "/15c.obj");
 
     if (!loadState()) {
@@ -51,36 +52,29 @@ bool HPCalc::keyBufferIsEmpty() {
 }
 
 void HPCalc::tick(){
-    static int n = 0;
+    static bool shouldUpdateDisplay = true;
     readKeys();
     executeCycle();
-    if (n++ % 2 == 0) {
-        updateDisplay();
-        n = 0;
-    }
+    if (shouldUpdateDisplay) updateDisplay();
+    shouldUpdateDisplay = !shouldUpdateDisplay;
 }
 
 void HPCalc::updateDisplay() {
-
+    DispInterface::display_callback(nv);
 }
 
 void HPCalc::executeCycle() {
-    int i = 500;
-    while (i-- > 0) {
+    for (int i = 0; i < 500; i++) {
         nut_execute_instruction(nv);
     }
 }
 
-char* HPCalc::getDisplayString() {
-
-}
-
 void HPCalc::readKeys() {
-    static int delay = 0;
+    static bool delay = false;
     int key;
 
     if (delay) {
-        delay--;
+        delay = false;
     } else {
         if (keyQueue.count()) {
             key = keyQueue.getLastKeycode();
@@ -100,7 +94,7 @@ void HPCalc::readKeys() {
                     } else {
                         nut_release_key(nv);
                     }
-                    delay = 1;
+                    delay = true;
                 }
             }
         }

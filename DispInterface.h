@@ -7,6 +7,7 @@
 class DispInterface {
     private:
         U8G2& _u8g2;
+        void showFlagLowBat(bool visible);
         void showFlagF(bool visible);
         void showFlagG(bool visible);
         void showFlagC(bool visible);
@@ -22,7 +23,8 @@ class DispInterface {
     public:
         DispInterface(U8G2& u8g2_);
         void init();
-        void displayString(char *str);
+        void displayString(char *str);  // usually called by display_callback(nut_reg_t *nv)
+        char* getDisplayString(nut_reg_t *nv);
         static void display_callback(nut_reg_t *nv);  // specify a register to modify a DispInterface
                                                       // object at recorded address. weird. consider
                                                       // to pass in an address directly.

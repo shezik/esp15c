@@ -12,12 +12,12 @@
 
 class HPCalc {
     private:
-        DispInterface *_display;
+        DispInterface *display;
         nut_reg_t *nv;
         KeyQueue keyQueue;  // !! 32 is probably enough. I don't feel like dealing with dynamic allocation.
     public:
-        HPCalc();
-        void init(DispInterface *dv);
+        HPCalc(DispInterface *dv);
+        void init();
         void saveState();
         bool loadState();
         void processKeypress(int code);
@@ -25,7 +25,6 @@ class HPCalc {
         void tick();
         void updateDisplay();
         void executeCycle();
-        char* getDisplayString();
         void readKeys();
 };
 
