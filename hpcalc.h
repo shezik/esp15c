@@ -5,7 +5,7 @@
 #include "DispInterface.h"
 #include "KeyQueue.h"
 #include <FS.h>
-#include <LITTLEFS.h>
+#include <SPIFFS.h>
 
 //#define NNPR_CLOCK 215000.0
 //#define NNPR_WSIZE 56.0

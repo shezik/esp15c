@@ -29,20 +29,24 @@ void HPCalc::init() {
 }
 
 void HPCalc::saveState() {
-    File saveFile = LITTLEFS.open("/save.bin", "w+");
+    File saveFile = SPIFFS.open("/save.bin", "w+");
 
     saveFile.close();
 }
 
 bool HPCalc::loadState() {
-    File saveFile = LITTLEFS.open("/save.bin", "r");
+    /* debug
+    File saveFile = SPIFFS.open("/save.bin", "r");
     
     if(!saveFile){
+        Serial.println("No save file!"); //debug
         return false;
     };
     
     saveFile.close();
     return true;
+    */
+   return false;
 }
 
 void HPCalc::processKeypress(int code) {
@@ -54,24 +58,28 @@ bool HPCalc::keyBufferIsEmpty() {
 }
 
 void HPCalc::tick(){
-    static bool shouldUpdateDisplay = true;
+    //static bool shouldUpdateDisplay = true; //debug
     readKeys();
     executeCycle();
-    if (shouldUpdateDisplay) updateDisplay();
-    shouldUpdateDisplay = !shouldUpdateDisplay;
+    updateDisplay();
+    //if (shouldUpdateDisplay) updateDisplay();
+    //shouldUpdateDisplay = !shouldUpdateDisplay;
 }
 
 void HPCalc::updateDisplay() {
+    Serial.printf("Going into %s!\n", __func__);
     DispInterface::display_callback(nv);
 }
 
 void HPCalc::executeCycle() {
+    Serial.printf("Going into %s!\n", __func__);
     for (int i = 0; i < 500; i++) {
         nut_execute_instruction(nv);
     }
 }
 
 void HPCalc::readKeys() {
+    Serial.printf("Going into %s!\n", __func__);
     static bool delay = false;
     int key;
 
@@ -80,6 +88,7 @@ void HPCalc::readKeys() {
     } else {
         if (keyQueue.count()) {
             key = keyQueue.getLastKeycode();
+            Serial.printf("Stage 1: Keycode: %d\n", key); //debug
             keyQueue.removeLastKeycode();
             if (key >= 0) {
                 nut_press_key(nv, key);
@@ -90,6 +99,7 @@ void HPCalc::readKeys() {
             if (key == -1) {
                 if (keyQueue.count()) {
                     key = keyQueue.getLastKeycode();
+                    Serial.printf("Stage 2: Keycode: %d\n", key); //debug
                     keyQueue.removeLastKeycode();
                     if (key >= 0) {
                         nut_press_key(nv, key);

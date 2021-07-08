@@ -29,11 +29,13 @@
 
 void *alloc (size_t size)
 {
+	Serial.printf("Going into %s!\n", __func__);
 	void *p;
 	
 	p = calloc (1, size);
 	if (! p)
 		fatal(2, "Memory allocation failed\n");
+	Serial.printf("Leaving %s!\n", __func__);
 	return (p);
 }
 
@@ -55,6 +57,6 @@ void trim_trailing_whitespace (char *s)
 
 void exit (int ret)
 {
-  Serial.printf("Program returned %d\n", ret);
+  Serial.printf("\nProgram returned %d\n", ret);
   while(1);  // dead loop
 }

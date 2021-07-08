@@ -41,7 +41,12 @@ void *alloc (size_t size);
 void trim_trailing_whitespace (char *s);
 
 #define fatal(ret, format, ...) \
-  Serial.printf("\nFatal error: \n" format, ##__VA_ARGS__); \
-  exit(ret)
+  do {\
+    Serial.printf("\nFatal error: \n" format, ##__VA_ARGS__); \
+    exit(ret); \
+  } while(0)
+
+#define warning(format, ...) \
+  Serial.printf("\nWarning: \n" format, ##__VA_ARGS__)
 
 #endif

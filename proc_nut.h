@@ -46,7 +46,7 @@
 
 #include <Arduino.h>
 #include "FS.h"
-#include <LITTLEFS.h>
+#include <SPIFFS.h>
 
 #define WSIZE 14
 #define EXPSIZE 3  // two exponent and one exponent sign digit

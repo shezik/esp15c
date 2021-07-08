@@ -83,12 +83,12 @@ static rom_word_t nut_get_ucode (nut_reg_t *nut_reg, rom_addr_t addr)
 	
 	if (! nut_reg->rom [page][bank])
     {
-		Serial.printf("write to nonexistent ROM location %04x (bank %d)\n", addr, bank);
+		fprintf (stderr, "write to nonexistent ROM location %04x (bank %d)\n", addr, bank);
 		return;
     }
 	if (! nut_reg->rom_writeable [page][bank])
     {
-		Serial.printf("write to non-writeable ROM location %04x (bank %d)\n", addr, bank);
+		fprintf (stderr, "write to non-writeable ROM location %04x (bank %d)\n", addr, bank);
 		return;
     }
 	nut_reg->rom [page][bank][offset] = data;
@@ -911,7 +911,7 @@ static void op_c_to_g (nut_reg_t *nut_reg, int opcode)
     {
 		nut_reg->g [1] = 0;
 #ifdef WARNING_G
-		Serial.printf("warning: c to g transfer with pt=13\n");
+		fprintf (stderr, "warning: c to g transfer with pt=13\n");
 #endif
     }
 	else
@@ -925,7 +925,7 @@ static void op_g_to_c (nut_reg_t *nut_reg, int opcode)
     {
 		;
 #ifdef WARNING_G
-		Serial.printf("warning: g to c transfer with pt=13\n");
+		fprintf (stderr, "warning: g to c transfer with pt=13\n");
 #endif
     }
 	else
@@ -946,7 +946,7 @@ static void op_c_exch_g (nut_reg_t *nut_reg, int opcode)
     {
 		nut_reg->g [1] = 0;
 #ifdef WARNING_G
-		Serial.printf("warning: c exchange g with pt=13\n");
+		fprintf (stderr, "warning: c exchange g with pt=13\n");
 #endif
     }
 	else
@@ -1444,19 +1444,19 @@ bool nut_parse_object_line (char *buf, int *bank, int *addr,
 		
 		if (buf [4] != ':')
 		{
-			Serial.printf("invalid object file format\n");
+			fprintf (stderr, "invalid object file format\n");
 			return (false);
 		}
 		
 		if (! parse_hex (& buf [0], 4, & a))
 		{
-			Serial.printf("invalid address %o\n", a);
+			fprintf (stderr, "invalid address %o\n", a);
 			return (false);
 		}
 		
 		if (! parse_hex (& buf [5], 3, & o))
 		{
-			Serial.printf("invalid opcode %o\n", o);
+			fprintf (stderr, "invalid opcode %o\n", o);
 			return (false);
 		}
 		
@@ -1740,34 +1740,31 @@ bool nut_read_object_file (nut_reg_t *nut_reg, const char *filename)
 	int addr;  // should change to addr_t, but will have to change
 			   // the parse function profiles to match.
 	rom_word_t opcode;
-	int count = 0;
+	//int count = 0;
 	char buf [80];
 	bool eof, error;
 	
 	f = SPIFFS.open(filename, "r");
 	if (! f)
     {
-		fatal(4, "Error opening object file: %s\n", filename);
+		fatal(2, "Error opening object file: %s\n", filename);
 		return false;
     }
 	
 	while (f.readBytesUntil('\n', buf, sizeof(buf)))  // Expect file to use Unix-style LF as EOL character
     {
-		trim_trailing_whitespace (buf);  // ...EOL characters and other useless stuff will be discarded here anyhow //debug
-		Serial.println(buf); //debug
-		buf[8] = '\0'; //debug
-		Serial.println(buf); //debug
+		trim_trailing_whitespace (buf);  // ...EOL characters and other useless stuff will be discarded here anyhow
 		if (! buf [0])
 			continue;
 		if (nut_parse_object_line (buf, & bank, & addr, & opcode))
 		{
 			if (! nut_write_rom (nut_reg, bank, addr, & opcode))
 				fatal(3, "can't load ROM word at bank %d address %o\n", bank, addr);
-			count++;
+			//count++;
 		}
     }
 	
-	Serial.printf("read %d words from '%s'\n", count, filename); //debug
+	//fprintf (stderr, "read %d words from '%s'\n", count, filename);
 	f.close();
 	return (true);
 }

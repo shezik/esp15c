@@ -14,12 +14,78 @@ void DispInterface::displayString(char *str) {
 
 }
 
-char* DispInterface::getDisplayString(nut_reg_t *nv) {
-    
+void DispInterface::getDisplayString(nut_reg_t *nv) {
+
+    Serial.printf("Going into %s!\n", __func__);
+    segment_bitmap_t display_segments[MAX_DIGIT_POSITION];
+    static segment_bitmap_t last_segments[MAX_DIGIT_POSITION];
+    //bool shouldUpdate = false;
+
+    for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
+        display_segments[i] = nv->display_segments[i];
+    }
+    /* debug
+    for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
+        if (display_segments[i] != last_segments[i]) {
+            shouldUpdate = true;
+            break;
+        }
+        last_segments[i] = display_segments[i];
+    }
+
+    if (!shouldUpdate) return;
+    */
+    char disp[2 * MAX_DIGIT_POSITION + 1];
+
+    for (int j = 0; j < (2 * MAX_DIGIT_POSITION + 1); j++) {
+        disp[j] = '\0';
+    }
+
+    int j = 0;
+    for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
+        switch (display_segments[i] & 0b01111111) {
+            case 0b01000000: disp[j++] = '-'; break;
+            case 0b00111111: disp[j++] = '0'; break;
+            case 0b00000110: disp[j++] = '1'; break;
+            case 0b01011011: disp[j++] = '2'; break;
+            case 0b01001111: disp[j++] = '3'; break;
+            case 0b01100110: disp[j++] = '4'; break;
+            case 0b01101101: disp[j++] = '5'; break;
+            case 0b01111101: disp[j++] = '6'; break;
+            case 0b00000111: disp[j++] = '7'; break;
+            case 0b01111111: disp[j++] = '8'; break;
+            case 0b01101111: disp[j++] = '9'; break;
+            case 0b01110011: disp[j++] = 'P'; break;
+            case 0b01111001: disp[j++] = 'E'; break;
+            case 0b00000010: disp[j++] = 'i'; break;
+            case 0b00100011: disp[j++] = 'n'; break;
+            case 0b01011100: disp[j++] = 'O'; break;
+            case 0b01010000: disp[j++] = 'R'; break;
+            case 0b00100001: disp[j++] = 'r'; break;
+            case 0b01100010: disp[j++] = 'u'; break;
+            case 0b01111100: disp[j++] = 'b'; break;
+            case 0b01011110: disp[j++] = 'd'; break;
+            case 0b01110100: disp[j++] = 'h'; break;
+            case 0b01110111: disp[j++] = 'A'; break;
+            case 0b00111001: disp[j++] = 'C'; break;
+            case 0b01110001: disp[j++] = 'F'; break;
+            case 0b00000000: disp[j++] = ' '; break;
+            default: warning("Unknown segment: %d\n", display_segments[i]);
+        }
+
+        if (display_segments[i] & 0b000100000000) {
+            disp[j++] = ',';
+        } else if (display_segments[i] & 0b10000000) {
+            disp[j++] = '.';
+        }
+    }
+
+    Serial.println(disp);
 }
 
 void DispInterface::display_callback(nut_reg_t *nv) {
-
+    Serial.printf("Going into %s!\n", __func__);
+    (*(DispInterface *)(nv->display)).getDisplayString(nv);
 }
 
 void DispInterface::showFlagLowBat(bool visible) {

@@ -2,7 +2,12 @@
  ESP32 port of [Eric Smith's Nonpareil](https://nonpareil.brouhaha.com/) calculator emulator, currently planned to only support HP-15C.  
  Based on [Tom Fors' early iPhone port](https://code.google.com/archive/p/hpcalc-iphone/).
 
-Currently constructing basic structures.
+## Current status
+Emulation seems to be working. Haven't implemented a keyboard yet, but it definitely reads keys.  
+**Any line commented with *debug* is either buggy or completely unfunctional. Contributions are very welcomed.**
+
+### Installation
+Download any library that is missing from Arduino IDE, use [Arduino ESP32 filesystem uploader](https://github.com/me-no-dev/arduino-esp32fs-plugin) to upload 15C ROM into SPIFFS *(no uploader is available for LittleFS so far)*, the check Serial Monitor.
 
 ## Why ESP32?
 - ESP32 has more RAM than ESP8266, enough for 15C's ROM and dozens of registers
