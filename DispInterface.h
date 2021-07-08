@@ -17,9 +17,8 @@ class DispInterface {
         void showPrgm(bool visible);
         void showComma(bool visible, int position);
         void showDecimal(bool visible, int position);
-        void setDeg();
-        void setRad();
-        void setGrad();
+        void showDeg();
+        void showGrad(bool isRad);
     public:
         DispInterface(U8G2& u8g2_);
         void init();

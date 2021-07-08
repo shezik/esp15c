@@ -62,14 +62,10 @@ void DispInterface::showDecimal(bool visible, int position) {
 
 }
 
-void DispInterface::setDeg() {
+void DispInterface::showDeg() {
 
 }
 
-void DispInterface::setRad() {
-
-}
-
-void DispInterface::setGrad() {
+void DispInterface::showGrad(bool isRad) {
 
 }
