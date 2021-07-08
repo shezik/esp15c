@@ -24,34 +24,11 @@
 //
 
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-//#include <string.h>
-
-//#include "arch.h"
-#include "util.h"
-#include "display.h"
-#include "proc.h"
-#include "digit_ops.h"
 #include "voyager_lcd.h"
-//#include "proc_int.h"
-#include "proc_nut.h"
 
 
 #define VOYAGER_DISPLAY_BLINK_DIVISOR 150
 
-
-/*typedef struct
-{
-	bool enable;
-	int count;
-	
-	bool blink;
-	bool blink_state;
-	int blink_count;
-} voyager_display_reg_t;
-*/
 
 static void voyager_op_display_off (nut_reg_t *nut_reg, int opcode)
 {
@@ -233,7 +210,7 @@ void print_display(nut_reg_t *nut_reg)
 }
 */
 
-void voyager_display_event_fn (nut_reg_t *nut_reg, int event)
+void voyager_display_event_fn (nut_reg_t *nut_reg, event_t event)
 {
 	voyager_display_reg_t *display = nut_reg->display_chip;
 	

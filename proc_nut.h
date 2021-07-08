@@ -21,8 +21,32 @@
 
 //
 // changes for mac os x by Maciej Bartosiak
+// changes for esp32 by shezik
 //
 
+
+#ifndef __proc_nut__
+#define __proc_nut__
+
+//#include <inttypes.h>
+//#include <stdbool.h>
+//#include <stdint.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+
+//#include "arch.h"
+//#include "platform.h"
+#include "util.h"
+#include "display.h"
+#include "proc.h"
+//#include "proc_int.h"
+#include "digit_ops.h"
+#include "voyager_lcd.h"
+
+#include <Arduino.h>
+#include "FS.h"
+#include <LITTLEFS.h>
 
 #define WSIZE 14
 #define EXPSIZE 3  // two exponent and one exponent sign digit
@@ -175,7 +199,7 @@ typedef struct nut_reg_t
 	//chip_t *phineas_chip;  // opaque
 	//chip_t *helios_chip;   // opaque
 	
-	voyager_display_reg_t *display_chip;
+	struct voyager_display_reg_t *display_chip;  // compiler refused to acknowledge type definition in voyager_lcd.h
 	
 	//sim_t *sim;
 	
@@ -198,3 +222,5 @@ void nut_press_key (nut_reg_t *nut_reg, int keycode);
 void nut_release_key (nut_reg_t *nut_reg);
 bool nut_execute_instruction (nut_reg_t *nut_reg);
 bool nut_print_state(nut_reg_t *nut_reg);
+
+#endif

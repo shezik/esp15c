@@ -21,28 +21,40 @@
 
 //
 // changes for mac os x by Maciej Bartosiak
+// changes for esp32 by shezik
 //
 
 
-#define VOYAGER_DISPLAY_DIGITS 11
+#include "util.h"
 
-// The Voyager display doesn't have a peripheral address like the
-// Coconut display, but we have to pick a chip number somehow, so we'll
-// use the same one.
-#define PFADDR_LCD_DISPLAY 0xfd
-
-struct nut_reg_t;
-
-typedef struct
+void *alloc (size_t size)
 {
-	bool enable;
-	int count;
+	void *p;
 	
-	bool blink;
-	bool blink_state;
-	int blink_count;
-} voyager_display_reg_t;
+	p = calloc (1, size);
+	if (! p)
+		fatal(2, "Memory allocation failed\n");
+	return (p);
+}
 
+void trim_trailing_whitespace (char *s)
+{
+	int i;
+	char c;
+	
+	i = strlen (s);
+	while (--i >= 0)
+    {
+		c = s [i];
+		if ((c == '\n') || (c == '\r') || (c == ' ') || (c == '\t'))
+			s [i] = '\0';
+		else
+			break;
+    }
+}
 
-void voyager_display_init (struct nut_reg_t *nut_reg);
-//void display_callback(struct nut_reg_t *nv);
+void exit (int ret)
+{
+  Serial.printf("Program returned %d\n", ret);
+  while(1);  // dead loop
+}

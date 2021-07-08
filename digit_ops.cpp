@@ -20,9 +20,6 @@
  */
 
 
-#include <stdbool.h>
-#include <stdint.h>
-
 #include "digit_ops.h"
 
 

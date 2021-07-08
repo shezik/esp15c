@@ -20,6 +20,9 @@
  */
 
 
+#ifndef __display__
+#define __display__
+
 #define MAX_DIGIT_POSITION 15    /* Classic, Topcat, 67, maybe 19C */
 /* Digit positions are numbered left to right, starting with 0. */
 
@@ -82,3 +85,5 @@ typedef uint32_t segment_bitmap_t;
 #define SEGMENTS_COLON  ((1 << 14) | (1 << 16))
 
 #define SEGMENT_ANN (1 << 17)
+
+#endif

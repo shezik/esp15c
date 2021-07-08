@@ -21,14 +21,19 @@
 
 //
 // changes for mac os x by Maciej Bartosiak
+// changes for esp32 by shezik
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <strings.h>
+
+#ifndef __util__
+#define __util__
+
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <stdarg.h>
+//#include <stdbool.h>
+//#include <stdint.h>
+//#include <strings.h>
 #include <Arduino.h>  // for Serial but it doesn't seem to be working
 
 void exit (int ret);
@@ -36,5 +41,7 @@ void *alloc (size_t size);
 void trim_trailing_whitespace (char *s);
 
 #define fatal(ret, format, ...) \
-  Serial.printf("\nFatal error: \n"format, ##__VA_ARGS__); \
+  Serial.printf("\nFatal error: \n" format, ##__VA_ARGS__); \
   exit(ret)
+
+#endif

@@ -20,6 +20,11 @@
  */
 
 
+#ifndef __digit_ops__
+#define __digit_ops__
+
+#include <Arduino.h>
+
 typedef uint8_t digit_t;
 
 void reg_zero (digit_t *dest, int first, int last);
@@ -55,3 +60,5 @@ void reg_shift_left (digit_t *reg, int first, int last);
 uint64_t bcd_reg_to_binary (digit_t *reg, int digits);
 
 void binary_to_bcd_reg (uint64_t val, digit_t *reg, int digits);
+
+#endif

@@ -24,16 +24,18 @@ void HPCalc::init() {
         // !! why do we need to toggle power state twice?
     }
 
+    nv->display = display;
+
 }
 
 void HPCalc::saveState() {
-    File saveFile = LittleFS.open("/save.bin", "w+");
+    File saveFile = LITTLEFS.open("/save.bin", "w+");
 
     saveFile.close();
 }
 
 bool HPCalc::loadState() {
-    File saveFile = LittleFS.open("/save.bin", "r");
+    File saveFile = LITTLEFS.open("/save.bin", "r");
     
     if(!saveFile){
         return false;

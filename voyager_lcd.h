@@ -21,8 +21,25 @@
 
 //
 // changes for mac os x by Maciej Bartosiak
+// changes for esp32 by shezik
 //
 
+
+#ifndef __voyager_lcd__
+#define __voyager_lcd__
+
+//#include <stdbool.h>
+//#include <stdint.h>
+//#include <stdio.h>
+//#include <string.h>
+
+//#include "arch.h"
+#include "util.h"
+#include "display.h"
+#include "proc.h"
+#include "digit_ops.h"
+//#include "proc_int.h"
+#include "proc_nut.h"
 
 #define VOYAGER_DISPLAY_DIGITS 11
 
@@ -33,7 +50,7 @@
 
 struct nut_reg_t;
 
-typedef struct
+typedef struct voyager_display_reg_t  // compiler refused to acknowledge type definition
 {
 	bool enable;
 	int count;
@@ -45,4 +62,6 @@ typedef struct
 
 
 void voyager_display_init (struct nut_reg_t *nut_reg);
-//void display_callback(struct nut_reg_t *nv);
+void voyager_display_event_fn (nut_reg_t *nut_reg, event_t event);
+
+#endif

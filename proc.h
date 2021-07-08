@@ -21,8 +21,12 @@
 
 //
 // changes for mac os x by Maciej Bartosiak
+// changes for esp32 by shezik
 //
 
+
+#ifndef __proc__
+#define __proc__
 
 #define MAX_RAM 1024  // $$$ ugly hack, needs to go!
 #define MAX_PF   256  // $$$ ugly hack, needs to go!
@@ -53,4 +57,4 @@ typedef uint32_t addr_t;
 
 typedef uint16_t rom_word_t;
 
-
+#endif

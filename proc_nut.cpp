@@ -23,26 +23,8 @@
 // changes for mac os x by Maciej Bartosiak
 //
 
-#include <inttypes.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-//#include "arch.h"
-//#include "platform.h"
-#include "util.h"
-#include "display.h"
-#include "proc.h"
-//#include "proc_int.h"
-#include "digit_ops.h"
-#include "voyager_lcd.h"
 #include "proc_nut.h"
-
-#include <Arduino.h>
-#include "FS.h"
-#include <LITTLEFS.h>
 
 #define KBD_RELEASE_DEBOUNCE_CYCLES 32
 
@@ -68,7 +50,6 @@ static char *kbd_state_name [KB_STATE_MAX] =
 void do_event (nut_reg_t *nut_reg, event_t event);
 void do_event_int(nut_reg_t *nut_reg, event_t event);
 void nut_event_fn (nut_reg_t *nut_reg, event_t event);
-void voyager_display_event_fn (nut_reg_t *nut_reg, event_t event);
 
 /* map from high opcode bits to register index */
 static int tmap [16] =
@@ -617,7 +598,7 @@ static void op_c_to_dadd (nut_reg_t *nut_reg, int opcode)
 						 (nut_reg->c [1] << 4) |
 						 (nut_reg->c [0])) & 0x3ff;
 	
-	do_event_int (nut_reg, event_ram_select);
+	//do_event_int (nut_reg, event_ram_select);  // only existed in phineas.c
 	//voyager_display_event_fn (nut_reg, event_ram_select);
 }
 
@@ -626,7 +607,7 @@ static void op_c_to_pfad (nut_reg_t *nut_reg, int opcode)
 	nut_reg->pf_addr = ((nut_reg->c [1] << 4) |
 						(nut_reg->c [0]));
 	
-	do_event_int (nut_reg, event_periph_select);
+	//do_event_int (nut_reg, event_periph_select);  // only existed in phineas.c
 	//voyager_display_event_fn (nut_reg, event_periph_select);
 }
 
@@ -1584,7 +1565,7 @@ bool nut_read_ram (nut_reg_t *nut_reg, int addr, uint64_t *val)
 	int i;
 	
 	if (addr > nut_reg->max_ram)
-		fatal (2, "classic_read_ram: address %d out of range\n", addr);
+		fatal(2, "classic_read_ram: address %d out of range\n", addr);
 	if (! nut_reg->ram_exists [addr])
 		return false;
 	
@@ -1607,7 +1588,7 @@ bool nut_write_ram (nut_reg_t *nut_reg, int addr, uint64_t *val)
 	int i;
 	
 	if (addr > nut_reg->max_ram)
-		fatal (2, "sim_write_ram: address %d out of range\n", addr);
+		fatal(2, "sim_write_ram: address %d out of range\n", addr);
 	if (! nut_reg->ram_exists [addr])
 		return false;
 	
@@ -1763,7 +1744,7 @@ bool nut_read_object_file (nut_reg_t *nut_reg, const char *filename)
 	char buf [80];
 	bool eof, error;
 	
-	f = LittleFS.open(filename, "r");
+	f = LITTLEFS.open(filename, "r");
 	if (! f)
     {
 		fprintf (stderr, "error opening object file\n");
@@ -1778,7 +1759,7 @@ bool nut_read_object_file (nut_reg_t *nut_reg, const char *filename)
 		if (nut_parse_object_line (buf, & bank, & addr, & opcode))
 		{
 			if (! nut_write_rom (nut_reg, bank, addr, & opcode))
-				fatal (3, "can't load ROM word at bank %d address %o\n", bank, addr);
+				fatal(3, "can't load ROM word at bank %d address %o\n", bank, addr);
 			//count++;
 		}
     }
