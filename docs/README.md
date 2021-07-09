@@ -7,7 +7,7 @@ Emulation seems to be working. Haven't implemented a keyboard yet, it reads from
 **Any line commented with *debug* is buggy, added to make everything work for now *(bodging)*, or completely unfunctional. Contributions are very welcomed.**
 
 ### Installation
-Download any library that is missing from Arduino IDE, use [Arduino ESP32 filesystem uploader](https://github.com/me-no-dev/arduino-esp32fs-plugin) to upload 15C ROM into SPIFFS *(no uploader is available for LittleFS so far)*, the check Serial Monitor.
+Download any library that is missing from Arduino IDE, use [Arduino ESP32 filesystem uploader](https://github.com/me-no-dev/arduino-esp32fs-plugin) to upload 15C ROM into SPIFFS *(no uploader is available for LittleFS so far)*, then check Serial Monitor.
 
 ### Request a keypress in Serial
 Use this photo to find the keycode you need:  
