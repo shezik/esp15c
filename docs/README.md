@@ -14,7 +14,7 @@ Use this photo to find the keycode you need:
 ![a shot of 15C keyboard with keycodes drawn onto it](keycodes.png)
 
 ### Attach a screen
-Change U8g2 constructor in [esp15c.ino](../esp15c.ino), check the wirings [here](PinDefs.md)
+Change U8g2 constructor in [esp15c.ino](../esp15c.ino), check the wirings [here](PinDefs.md).
 
 ## Why ESP32?
 - ESP32 has more RAM than ESP8266, enough for 15C's ROM and dozens of registers
