@@ -4,14 +4,14 @@
 
 ## Current status
 Emulation seems to be working. Haven't implemented a keyboard yet, it reads from Serial.  
-**Any line commented with *debug* is buggy, added to make everything work for now *(bodging)*, or completely unfunctional. Contributions are very welcomed.**
+**Any line commented with *debug* is buggy, added to make everything work for now *(bodging)*, or completely malfunctioning. Contributions are very welcomed.**
 
 ### Installation
-Download any library that is missing from Arduino IDE, use [Arduino ESP32 filesystem uploader](https://github.com/me-no-dev/arduino-esp32fs-plugin) to upload 15C ROM into SPIFFS *(no uploader is available for LittleFS so far)*, then check Serial Monitor.
+Download any library that is missing from Arduino IDE, use [Arduino ESP32 filesystem uploader](https://github.com/me-no-dev/arduino-esp32fs-plugin) to upload 15C ROM into SPIFFS *(no uploader is available for LittleFS so far)*, then reset & check Serial Monitor.
 
 ### Request a keypress in Serial
 Use this photo to find the keycode you need:  
-![a shot of 15C keyboard with keycodes drawn onto it](15c.png)
+![a shot of 15C keyboard with keycodes drawn onto it](keycodes.png)
 
 ## Why ESP32?
 - ESP32 has more RAM than ESP8266, enough for 15C's ROM and dozens of registers
