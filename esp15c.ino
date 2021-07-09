@@ -24,12 +24,11 @@ void setup() {
     }
 
     u8g2.begin();
-    //u8g2.clearBuffer();
     u8g2.setContrast(224);
-    //u8g2.setFont(u8g2_font_6x10_tr);  // 6x10
-    //u8g2.setFont(u8g2_font_freedoomr10_mu);  // 7x11
     u8g2.setFontMode(1);
 
+    //dispInterface.lowBat = true;  //debug
+    dispInterface.displayString("LOADING");
     emuInterface.init();
     //keyboard.init();
 

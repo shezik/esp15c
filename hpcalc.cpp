@@ -58,12 +58,12 @@ bool HPCalc::keyBufferIsEmpty() {
 }
 
 void HPCalc::tick(){
-    //static bool shouldUpdateDisplay = true; //debug
+    static bool shouldUpdateDisplay = true;
     readKeys();
     executeCycle();
     updateDisplay();
-    //if (shouldUpdateDisplay) updateDisplay();
-    //shouldUpdateDisplay = !shouldUpdateDisplay;
+    if (shouldUpdateDisplay) updateDisplay();
+    shouldUpdateDisplay = !shouldUpdateDisplay;
 }
 
 void HPCalc::updateDisplay() {
@@ -96,7 +96,7 @@ void HPCalc::readKeys() {
                 nut_release_key(nv);
             }
 
-            if (key == -1) {
+            if (key == -1) {  // !! why?
                 if (keyQueue.count()) {
                     key = keyQueue.getLastKeycode();
                     Serial.printf("Stage 2: Keycode: %d\n", key); //debug
@@ -112,16 +112,3 @@ void HPCalc::readKeys() {
         }
     }
 }
-
-/*
-
-void shutdown() is for saving state when closing the app
-which is unnecessary in embedded systems.
-But it could be useful if we use a button to turn ESP8266 on/off
-instead of merely cutting power with a switch.
-Another time.
-
-Parsing input as string is not supported, therefore
-void playMacro() and related functions will not be implemented.
-
-*/

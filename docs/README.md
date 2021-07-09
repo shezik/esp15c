@@ -3,7 +3,7 @@
  Based on [Tom Fors' early iPhone port](https://code.google.com/archive/p/hpcalc-iphone/).
 
 ## Current status
-Emulation seems to be working. Haven't implemented a keyboard yet, it reads from Serial.  
+Emulation seems to be working. LCD driver is done. Haven't implemented a keyboard yet, it reads from Serial.  
 **Any line commented with *debug* is buggy, added to make everything work for now *(bodging)*, or completely malfunctioning. Contributions are very welcomed.**
 
 ### Installation
@@ -12,6 +12,9 @@ Download any library that is missing from Arduino IDE, use [Arduino ESP32 filesy
 ### Request a keypress in Serial
 Use this photo to find the keycode you need:  
 ![a shot of 15C keyboard with keycodes drawn onto it](keycodes.png)
+
+### Attach a screen
+Change U8g2 constructor in [esp15c.ino](../esp15c.ino), check the wirings [here](PinDefs.md)
 
 ## Why ESP32?
 - ESP32 has more RAM than ESP8266, enough for 15C's ROM and dozens of registers
