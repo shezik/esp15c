@@ -1743,6 +1743,7 @@ bool nut_read_object_file (nut_reg_t *nut_reg, const char *filename)
 	int count = 0;
 	char buf [80];
 	bool eof, error;
+	String oneline;
 	
 	f = SPIFFS.open(filename, "r");
 	if (! f)
@@ -1751,11 +1752,12 @@ bool nut_read_object_file (nut_reg_t *nut_reg, const char *filename)
 		return false;
     }
 	
-	while (f.readBytesUntil('\n', buf, sizeof(buf)))  // Expect file to use Unix-style LF as EOL character
+	while (f.available())
     {
-		trim_trailing_whitespace (buf);  // ...EOL characters and other useless stuff will be discarded here anyhow //debug
-		//Serial.println(buf); //debug
-		buf[8] = '\0'; //debug
+		oneline = f.readStringUntil('\n');
+		if (oneline.length() > 79) continue;  // buffer is only 80 chars long
+		strcpy(buf, oneline.c_str());
+		trim_trailing_whitespace (buf);  // EOL characters and other useless stuff will be discarded here anyhow
 		//Serial.println(buf); //debug
 		if (! buf [0])
 			continue;
