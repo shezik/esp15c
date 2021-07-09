@@ -16,25 +16,24 @@ void DispInterface::displayString(char *str) {
 
 void DispInterface::getDisplayString(nut_reg_t *nv) {
 
-    Serial.printf("Going into %s!\n", __func__);
+    //Serial.printf("Going into %s!\n", __func__); //debug
     segment_bitmap_t display_segments[MAX_DIGIT_POSITION];
     static segment_bitmap_t last_segments[MAX_DIGIT_POSITION];
-    //bool shouldUpdate = false;
+    bool shouldUpdate = false;
 
     for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
         display_segments[i] = nv->display_segments[i];
     }
-    /* debug
+    
     for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
         if (display_segments[i] != last_segments[i]) {
             shouldUpdate = true;
-            break;
         }
         last_segments[i] = display_segments[i];
     }
 
     if (!shouldUpdate) return;
-    */
+    
     char disp[2 * MAX_DIGIT_POSITION + 1];
 
     for (int j = 0; j < (2 * MAX_DIGIT_POSITION + 1); j++) {
@@ -84,7 +83,7 @@ void DispInterface::getDisplayString(nut_reg_t *nv) {
 }
 
 void DispInterface::display_callback(nut_reg_t *nv) {
-    Serial.printf("Going into %s!\n", __func__);
+    //Serial.printf("Going into %s!\n", __func__); //debug
     (*(DispInterface *)(nv->display)).getDisplayString(nv);
 }
 

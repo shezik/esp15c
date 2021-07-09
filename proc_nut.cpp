@@ -1754,9 +1754,9 @@ bool nut_read_object_file (nut_reg_t *nut_reg, const char *filename)
 	while (f.readBytesUntil('\n', buf, sizeof(buf)))  // Expect file to use Unix-style LF as EOL character
     {
 		trim_trailing_whitespace (buf);  // ...EOL characters and other useless stuff will be discarded here anyhow //debug
-		Serial.println(buf); //debug
+		//Serial.println(buf); //debug
 		buf[8] = '\0'; //debug
-		Serial.println(buf); //debug
+		//Serial.println(buf); //debug
 		if (! buf [0])
 			continue;
 		if (nut_parse_object_line (buf, & bank, & addr, & opcode))

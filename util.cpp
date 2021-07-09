@@ -29,13 +29,13 @@
 
 void *alloc (size_t size)
 {
-	Serial.printf("Going into %s!\n", __func__);
+	//Serial.printf("Going into %s!\n", __func__); //debug
 	void *p;
 	
 	p = calloc (1, size);
 	if (! p)
 		fatal(2, "Memory allocation failed\n");
-	Serial.printf("Leaving %s!\n", __func__);
+	//Serial.printf("Leaving %s!\n", __func__); //debug
 	return (p);
 }
 

@@ -67,19 +67,19 @@ void HPCalc::tick(){
 }
 
 void HPCalc::updateDisplay() {
-    Serial.printf("Going into %s!\n", __func__);
+    //Serial.printf("Going into %s!\n", __func__); //debug
     DispInterface::display_callback(nv);
 }
 
 void HPCalc::executeCycle() {
-    Serial.printf("Going into %s!\n", __func__);
+    //Serial.printf("Going into %s!\n", __func__); //debug
     for (int i = 0; i < 500; i++) {
         nut_execute_instruction(nv);
     }
 }
 
 void HPCalc::readKeys() {
-    Serial.printf("Going into %s!\n", __func__);
+    //Serial.printf("Going into %s!\n", __func__); //debug
     static bool delay = false;
     int key;
 

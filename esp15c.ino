@@ -12,6 +12,8 @@ U8G2_ST7565_JLX12864_F_4W_SW_SPI u8g2(U8G2_R2, /*clock=*/9, /*data=*/15, /*cs=*/
 DispInterface dispInterface(u8g2);
 HPCalc emuInterface(&dispInterface);
 
+int serialInt;
+
 void setup() {
     Serial.begin(115200);
 
@@ -27,5 +29,11 @@ void setup() {
 
 void loop() {
     emuInterface.tick();
+    if (Serial.available()) {
+        serialInt = Serial.readStringUntil('\n').toInt();
+        Serial.printf("Processing serial input: %d\n", serialInt);
+        emuInterface.processKeypress(serialInt);
+        emuInterface.processKeypress(-1);
+    }
     //emuInterface.processKeypress(keyboard.getKey());
 }
