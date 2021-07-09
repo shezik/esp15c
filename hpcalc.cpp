@@ -14,8 +14,8 @@ void HPCalc::init() {
     if (!loadState()) {
         processKeypress(24);  // auto on
         processKeypress(-1);
-        processKeypress(129);  // backspace key, clears Pr Error
-        processKeypress(-1);
+        //processKeypress(129);  // backspace key, clears Pr Error
+        //processKeypress(-1);
     } else {
         processKeypress(24);  // auto on
         processKeypress(-1);

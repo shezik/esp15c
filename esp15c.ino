@@ -2,11 +2,13 @@
 #include "FS.h"
 #include <SPIFFS.h>
 #include <U8g2lib.h>
+#include <SPI.h>
+#include <Wire.h>
 #include "hpcalc.h"
 
 #define FORMAT_SPIFFS_IF_FAILED true
 
-U8G2_ST7565_JLX12864_F_4W_SW_SPI u8g2(U8G2_R2, /*clock=*/9, /*data=*/15, /*cs=*/8, /*dc=*/10, /*reset=*/U8X8_PIN_NONE);
+U8G2_ST7565_JLX12864_F_4W_SW_SPI u8g2(U8G2_R2, /*clock=*/18, /*data=*/23, /*cs=*/5, /*dc=*/19, /*reset=*/U8X8_PIN_NONE);
 //Keyboard_10x4_MCP23016 keyboard(/*MCPAddress=*/0x20, /*MCPSDA=*/D2, /*MCPSCL=*/D1);
 
 DispInterface dispInterface(u8g2);
@@ -20,6 +22,13 @@ void setup() {
     if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
         Serial.println("Failed to mount SPIFFS");
     }
+
+    u8g2.begin();
+    //u8g2.clearBuffer();
+    u8g2.setContrast(224);
+    //u8g2.setFont(u8g2_font_6x10_tr);  // 6x10
+    //u8g2.setFont(u8g2_font_freedoomr10_mu);  // 7x11
+    u8g2.setFontMode(1);
 
     emuInterface.init();
     //keyboard.init();
