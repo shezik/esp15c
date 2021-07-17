@@ -35,12 +35,15 @@ void DispInterface::displayString(char *rawstr) {
 }
 */
 
-// rawstr[48] should be a valid string. I'm not gonna wipe that ass for you
-void DispInterface::displayString(char rawstr[]) { 
+// rawstr_[48] should be a valid string, I'm not gonna wipe that ass for you.
+void DispInterface::displayString(const char rawstr_[]) { 
 
     int i;
     int xOffset = annunciatorFontX;
     bool containsAnnunciators = false;
+
+    char rawstr[48];
+    strcpy(rawstr, rawstr_);
 
     u8g2.clearBuffer();
     u8g2.setFontDirection(0);

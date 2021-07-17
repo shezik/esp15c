@@ -2,6 +2,7 @@
 #define __DispInterface__
 
 
+// custom display settings
 #define numFont u8g2_font_t0_15_mr
 #define numFontWidth 9
 #define numFontX 2
@@ -23,7 +24,7 @@ class DispInterface {
     public:
         bool lowBat = false;
         DispInterface(U8G2& u8g2_);
-        void displayString(char str[]);  // usually called by display_callback(nut_reg_t *nv)
+        void displayString(const char rawstr_[]);  // usually called by display_callback(nut_reg_t *nv)
         char* parseDisplaySegments(segment_bitmap_t display_segments[]);
         static void display_callback(nut_reg_t *nv);  // specify a register to modify a DispInterface
                                                       // object at recorded address. weird. consider

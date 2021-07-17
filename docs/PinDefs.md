@@ -12,3 +12,10 @@
 | EN      | RST          | 2       |
 | 3V3     | VDD          | 6       |
 | GND     | GND          | 7       |
+
+## CH450 (I<sup>2</sup>C)
+| Arduino | Description  | Chip |
+|---------|--------------|------|
+| D21     | SDA          | 4    |
+| D22     | SCL          | 3    |
+| D34     | Interrupt    | 19   |
