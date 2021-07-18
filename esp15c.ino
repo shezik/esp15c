@@ -10,7 +10,7 @@
 #define FORMAT_SPIFFS_IF_FAILED true
 
 U8G2_ST7565_JLX12864_F_4W_SW_SPI u8g2(U8G2_R2, /*clock=*/18, /*data=*/23, /*cs=*/5, /*dc=*/19, /*reset=*/U8X8_PIN_NONE);
-Kbd_8x5_CH450 keyboard;
+Kbd_8x5_CH450 keyboard(/*sda=*/21, /*scl=*/22, /*freq=*/1000000);
 
 DispInterface dispInterface(u8g2);
 HPCalc emuInterface(&dispInterface);
@@ -20,7 +20,6 @@ int serialInt;
 void setup() {
 
     Serial.begin(115200);
-    Wire.begin(/*sda=*/21, /*scl=*/22, /*freq=*/1000000);
 
     pinMode(34, INPUT);  // CH450 interrupt
 
@@ -51,7 +50,20 @@ void loop() {
         emuInterface.processKeypress(serialInt);
         emuInterface.processKeypress(-1);
     }
-    //emuInterface.processKeypress(keyboard.getKey());
 
-    Serial.println(keyboard.requestByte());
+    /*
+    Serial.printf("pin 39 state: %d\n", digitalRead(39));
+    Serial.println(keyboard.requestKeyData());
+    */
+
+    //if (digitalRead(39)) {
+        uint8_t keyData = keyboard.requestKeyData();
+        uint8_t keycode = keyboard.toKeycode(keyData);
+        Serial.printf("\nProcessing keyboard input: \nkeyData: %d\nkeycode: %d\n\n", keyData, keycode);
+        if (keyData & 0b01000000) {
+            emuInterface.processKeypress(keycode);
+            emuInterface.processKeypress(-1);
+        }
+    //}
+
 }
