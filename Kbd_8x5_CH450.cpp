@@ -52,6 +52,7 @@ bool Kbd_8x5_CH450::writeByte(uint8_t data) {
     digitalWrite(scl, LOW);
     pinMode(sda, OUTPUT);  // terminal state: sda = low, scl = low
     //Serial.printf("writeByte result is %d\n", result); //debug
+    delay(0.1);  // !!
     return result;
 }
 

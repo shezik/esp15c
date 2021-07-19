@@ -31,7 +31,7 @@ void setup() {
     u8g2.setContrast(224);
     u8g2.setFontMode(1);
 
-    keyboard.init();
+    Serial.printf("Keyboard init result: %d\n",keyboard.init());
 
     //dispInterface.lowBat = true;  //debug
     //dispInterface.displayString("  LOADING");
