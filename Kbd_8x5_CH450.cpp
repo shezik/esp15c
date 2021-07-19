@@ -9,27 +9,25 @@ Kbd_8x5_CH450::Kbd_8x5_CH450(uint8_t sda_, uint8_t scl_, unsigned int freq_)
 }
 
 void Kbd_8x5_CH450::startComm() {
-    //Serial.printf("Going into %s!\n", __func__); //debug
     digitalWrite(sda, HIGH);
-    delay(10);
+    //delay(10);
     digitalWrite(scl, HIGH);
-    delay(10);
+    //delay(10);
     digitalWrite(sda, LOW);
-    delay(10);
+    delay(0.1);
     digitalWrite(scl, LOW);
-    delay(10);
+    //delay(10);
 }
 
 void Kbd_8x5_CH450::stopComm() {
-    //Serial.printf("Going into %s!\n", __func__); //debug
-    //digitalWrite(scl, LOW);
-    //delay(10);
+    //digitalWrite(scl, LOW);  // if scl is set to low after each operation
+    //delay(10);               // we won't need this part
     digitalWrite(sda, LOW);
-    delay(10);
+    //delay(10);
     digitalWrite(scl, HIGH);  // stays high during inactive?
-    delay(10);
+    //delay(10);
     digitalWrite(sda, HIGH);
-    delay(10);
+    //delay(10);
 }
 
 bool Kbd_8x5_CH450::writeByte(uint8_t data) {
@@ -40,17 +38,17 @@ bool Kbd_8x5_CH450::writeByte(uint8_t data) {
         } else {
             digitalWrite(sda, LOW);
         }
-        delay(10);
+        //delay(10);
         digitalWrite(scl, HIGH);
-        delay(10);
+        delay(0.1);
         digitalWrite(scl, LOW);
-        delay(10);
+        delay(0.1);
     }
     pinMode(sda, INPUT);
     digitalWrite(scl, HIGH);
-    delay(10);
+    delay(0.1);
     bool result = digitalRead(sda);
-    delay(10);
+    //delay(10);
     digitalWrite(scl, LOW);
     pinMode(sda, OUTPUT);  // terminal state: sda = low, scl = low
     //Serial.printf("writeByte result is %d\n", result); //debug
@@ -63,21 +61,21 @@ uint8_t Kbd_8x5_CH450::readByte() {
     pinMode(sda, INPUT);
     for (int8_t i = 7; i > -1; i--) {
         digitalWrite(scl, HIGH);
-        delay(10);
+        delay(0.1);
         if (digitalRead(sda)) {
             //Serial.println("We've got something"); //debug
             data |= (1 << i);
         }
         digitalWrite(scl, LOW);
-        delay(10);
+        delay(0.1);
     }
     pinMode(sda, OUTPUT);
     digitalWrite(sda, HIGH);
-    delay(10);
+    //delay(10);
     digitalWrite(scl, HIGH);
-    delay(10);
+    delay(0.1);
     digitalWrite(scl, LOW);
-    delay(10);
+    //delay(10);
     return data;
 }
 
@@ -103,7 +101,7 @@ uint8_t Kbd_8x5_CH450::requestKeyData() {
     bool resultA = writeByte(0b01001111);  // magic byte to request key data
     uint8_t resultB = readByte();
     stopComm();
-    delay(100);
+    //delay(100);
     return resultA ? resultB : 0;   
 }
 

@@ -7,6 +7,7 @@
  &127: ---- ---- ---- ---- ---- ---- -yyy yyyy
  &128: ---- ---- ---- ---- ---- ---- y--- ---- '.'
 &~511: yyyy yyyy yyyy yyyy yyyy yyy- ---- ---- annunciators:
+       in which segment, &~511 is not zero:
        3rd:USER   4th:f    5th:g  6th:BEGIN 7th:G(RAD)
 	   8th:(G)RAD 9th:D.MY 10th:C 11th:PRGM
  &256: ---- ---- ---- ---- ---- ---y ---- ---- tail of ','
