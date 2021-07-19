@@ -8,7 +8,7 @@ class Kbd_8x5_CH450 {
     private:
         uint8_t sda;
         uint8_t scl;
-        unsigned int freq;
+        unsigned int freq;  // currently useless
         void startComm();
         void stopComm();
         bool writeByte(uint8_t data);
@@ -20,7 +20,7 @@ class Kbd_8x5_CH450 {
                                      { 19,  51, 115, 195, 50}, \
                                      { 16,  48, 112, 192, 55}, \
                                      { 17,  49, 113, 193, 52}, \
-                                     { 24,  56, 120, 200, 53} };
+                                     { 24,  56, 120, 200, 53} };  // customize it yourself depending on your wirings
     public:
         bool keyIsDown = false;
         Kbd_8x5_CH450(uint8_t sda_, uint8_t scl_, unsigned int freq_);

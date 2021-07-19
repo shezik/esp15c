@@ -11,7 +11,7 @@ Download any library that is missing from Arduino IDE, use [Arduino ESP32 filesy
 
 ### Request a keypress in Serial
 Use this photo to find the keycode you need:  
-![a shot of 15C keyboard with keycodes drawn onto it](keycodes.png)
+![a shot of 15C keyboard with keycodes drawn onto it](markdownAssets/keycodes.png)
 
 ### Attach a screen
 Change U8g2 constructor in [esp15c.ino](../esp15c.ino), check the wirings [here](PinDefs.md).

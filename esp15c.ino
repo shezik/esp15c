@@ -51,19 +51,16 @@ void loop() {
         emuInterface.processKeypress(-1);
     }
 
-    /*
-    Serial.printf("pin 39 state: %d\n", digitalRead(39));
-    Serial.println(keyboard.requestKeyData());
-    */
+    //Serial.printf("pin 34 state: %d\n", digitalRead(34));  //debug
 
-    //if (digitalRead(39)) {
+    if (!digitalRead(34)) {
         uint8_t keyData = keyboard.requestKeyData();
         uint8_t keycode = keyboard.toKeycode(keyData);
         Serial.printf("\nProcessing keyboard input: \nkeyData: %d\nkeycode: %d\n\n", keyData, keycode);
-        if (keyData & 0b01000000) {
+        //if (keyData & 0b01000000) {
             emuInterface.processKeypress(keycode);
             emuInterface.processKeypress(-1);
-        }
-    //}
+        //}
+    }
 
 }

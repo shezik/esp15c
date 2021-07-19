@@ -1,6 +1,6 @@
 # Pin Definitions
 
-![DOIT32 devkit v1 pinout](pinoutDOIT32devkitv1.png)
+![DOIT32 devkit v1 pinout](markdownAssets/pinoutDOIT32devkitv1.png)
 
 ## Display LX-12864L-1 (SPI)
 | Arduino | Description  | Display |

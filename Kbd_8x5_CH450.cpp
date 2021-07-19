@@ -112,7 +112,14 @@ bool Kbd_8x5_CH450::toStatus(uint8_t rawdata) {
 }
 
 uint8_t Kbd_8x5_CH450::toKeycode(uint8_t rawdata) {
-    uint8_t row = rawdata & 0b00000111;
-    uint8_t col = rawdata & 0b00111000;
-    return keycodeMap[row][col];
+
+    uint8_t row = (rawdata & 0b00111000) >> 3;  // SEG
+    uint8_t col = (rawdata & 0b00000111) - 2;   // DIG
+
+    if (row <= 8 && col <= 5) {
+        return keycodeMap[row][col];
+    } else {
+        return 0;
+    }
+
 }
