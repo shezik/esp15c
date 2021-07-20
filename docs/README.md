@@ -4,7 +4,7 @@
 
 ## Current status
 Emulation seems to be working well. LCD and keyboard driver is done.  
-**Any line commented with *debug* is buggy, added to make everything work for now *(bodging)*, or completely malfunctioning. Contributions are very welcomed.**
+**Any line commented with *debug* could be buggy, added to make everything work for now *(bodging)*, or completely malfunctioning. Contributions are very welcomed.**
 
 ### Installation
 Download any library that is missing from Arduino IDE, use [Arduino ESP32 filesystem uploader](https://github.com/me-no-dev/arduino-esp32fs-plugin) to upload 15c ROM into SPIFFS *(since no uploader is available for LittleFS so far)*, then reset & check Serial Monitor.
@@ -18,7 +18,8 @@ Change U8g2 constructor in [esp15c.ino](../esp15c.ino), check the wirings [here]
 
 ### Attach a keyboard
 Check the wirings [here](PinDefs.md).  
-Setting up a key matrix is kind of tricky. Modify *keycodeMap* in *[Kbd_8x5_CH450.h](../Kbd_8x5_CH450.h)* to change mapping.
+Setting up a key matrix is kind of tricky. Modify *keycodeMap* in *[Kbd_8x5_CH450.h](../Kbd_8x5_CH450.h)* to change mapping.  
+Read the datasheet of CH450 in Chinese [here](CH450/CH450%20Datasheet.pdf).
 
 ## Why ESP32?
 - ESP32 has more RAM than ESP8266, enough for 15c's ROM and dozens of registers
