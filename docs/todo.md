@@ -10,4 +10,5 @@
 - add some menus
 - figure out what keycode -1 actually stands for
 
-~~What about we skip converting register to string in display update process of display_register->string->display, only doing so when requested?~~ this is fast enough.
+What about we skip converting register to string in display update process of display_register->string->display, only doing so when requested? ~~this is fast enough.~~  
+This is actually a great idea. [display_segments to actual segments.txt](display_segments%20to%20actual%20segments.txt)
