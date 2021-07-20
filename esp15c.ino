@@ -15,13 +15,13 @@ Kbd_8x5_CH450 keyboard(/*sda=*/21, /*scl=*/22, /*freq=*/1000000);
 DispInterface dispInterface(u8g2);
 HPCalc emuInterface(&dispInterface);
 
-int serialInt;
+void keyboardTick();
 
 void setup() {
 
     Serial.begin(115200);
 
-    pinMode(34, INPUT);  // CH450 interrupt
+    pinMode(34, INPUT);  // CH450 keyboard interrupt (active low)
 
     if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
         Serial.println("Failed to mount SPIFFS");
@@ -45,22 +45,44 @@ void loop() {
     emuInterface.tick();
 
     if (Serial.available()) {
-        serialInt = Serial.readStringUntil('\n').toInt();
+        int serialInt = Serial.readStringUntil('\n').toInt();
         Serial.printf("Processing serial input: %d\n", serialInt);
         emuInterface.processKeypress(serialInt);
         emuInterface.processKeypress(-1);
     }
 
+    keyboardTick();
+    
+}
+
+void keyboardTick() {
+
     //Serial.printf("pin 34 state: %d\n", digitalRead(34));  //debug
 
+    /*
     if (!digitalRead(34)) {
-        uint8_t keyData = keyboard.requestKeyData();
+        uint8_t keyData = keyboard.getKeyData();
         uint8_t keycode = keyboard.toKeycode(keyData);
         Serial.printf("\nProcessing keyboard input: \nkeyData: %d\nkeycode: %d\n\n", keyData, keycode);
-        //if (keyData & 0b01000000) {
-            emuInterface.processKeypress(keycode);
-            emuInterface.processKeypress(-1);
-        //}
+        emuInterface.processKeypress(keycode);
+        emuInterface.processKeypress(-1);
+    }
+    */
+
+    static bool keyIsDown = false;
+
+    if (!digitalRead(34)) {
+        if (keyIsDown) {
+            emuInterface.processKeypress(-1);  // should we handle multiple keypresses like this? (CH450 doesn't even support that but I'd like to know anyway.)
+        } else {
+            keyIsDown = true;
+        }
+        emuInterface.processKeypress(keyboard.toKeycode(keyboard.getKeyData()));
+    }
+
+    if (keyIsDown && !keyboard.toState(keyboard.getKeyData())) {
+        emuInterface.processKeypress(-1);
+        keyIsDown = false;
     }
 
 }

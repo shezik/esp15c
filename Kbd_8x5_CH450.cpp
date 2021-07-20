@@ -96,7 +96,7 @@ bool Kbd_8x5_CH450::init() {
 
 }
 
-uint8_t Kbd_8x5_CH450::requestKeyData() {
+uint8_t Kbd_8x5_CH450::getKeyData() {
     //Serial.printf("Going into %s!\n", __func__); //debug
     startComm();
     bool resultA = writeByte(0b01001111);  // magic byte to request key data
@@ -106,7 +106,7 @@ uint8_t Kbd_8x5_CH450::requestKeyData() {
     return resultA ? resultB : 0;   
 }
 
-bool Kbd_8x5_CH450::toStatus(uint8_t rawdata) {
+bool Kbd_8x5_CH450::toState(uint8_t rawdata) {
     return rawdata & 0b01000000;
 }
 

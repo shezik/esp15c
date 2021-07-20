@@ -13,7 +13,7 @@ class Kbd_8x5_CH450 {
         void stopComm();
         bool writeByte(uint8_t data);
         uint8_t readByte();
-        uint8_t keycodeMap[8][5] = { {131, 130, 194, 114, 18}, \
+        const uint8_t keycodeMap[8][5] = { {131, 130, 194, 114, 18}, \
                                      {128, 135, 199,  55, 23}, \
                                      {129, 132, 196, 116, 20}, \
                                      {136, 132, 197, 117, 21}, \
@@ -25,8 +25,8 @@ class Kbd_8x5_CH450 {
         bool keyIsDown = false;
         Kbd_8x5_CH450(uint8_t sda_, uint8_t scl_, unsigned int freq_);
         bool init();
-        uint8_t requestKeyData();
-        bool toStatus(uint8_t rawdata);
+        uint8_t getKeyData();
+        bool toState(uint8_t rawdata);
         uint8_t toKeycode(uint8_t rawdata);
 };
 
