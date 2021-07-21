@@ -27,11 +27,14 @@ void setup() {
         Serial.println("Failed to mount SPIFFS");
     }
 
+    setCpuFrequencyMhz(80);  // My devkit has a 40 MHz Xtal crystal
+    Serial.printf("CPU Freq: %d MHz\nXtal Freq: %d Mhz\nAPB Freq: %d Hz\n", getCpuFrequencyMhz(), getXtalFrequencyMhz(), getApbFrequency());
+
     u8g2.begin();
     u8g2.setContrast(224);
     u8g2.setFontMode(1);
 
-    Serial.printf("Keyboard init result: %d\n",keyboard.init());
+    Serial.printf("Keyboard init result: %d\n", keyboard.init());
 
     //dispInterface.lowBat = true;  //debug
     //dispInterface.displayString("  LOADING");

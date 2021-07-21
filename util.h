@@ -42,7 +42,7 @@ void trim_trailing_whitespace (char *s);
 
 #define fatal(ret, format, ...) \
   do {\
-    Serial.printf("\nFatal error: \n" format "\n", ##__VA_ARGS__); \
+    Serial.printf("\nFatal error: \n" format, ##__VA_ARGS__); \
     exit(ret); \
   } while(0)
 

@@ -78,6 +78,7 @@ void HPCalc::executeCycle() {
     }
 }
 
+/*
 void HPCalc::readKeys() {
     //Serial.printf("Going into %s!\n", __func__); //debug
     static bool delay = false;
@@ -88,7 +89,7 @@ void HPCalc::readKeys() {
     } else {
         if (keyQueue.count()) {
             key = keyQueue.getLastKeycode();
-            Serial.printf("Stage 1: Keycode: %d\n", key); //debug
+            //Serial.printf("Stage 1: Keycode: %d\n", key); //debug
             keyQueue.removeLastKeycode();
             if (key >= 0) {
                 nut_press_key(nv, key);
@@ -99,7 +100,7 @@ void HPCalc::readKeys() {
             if (key == -1) {  // !! why?
                 if (keyQueue.count()) {
                     key = keyQueue.getLastKeycode();
-                    Serial.printf("Stage 2: Keycode: %d\n", key); //debug
+                    //Serial.printf("Stage 2: Keycode: %d\n", key); //debug
                     keyQueue.removeLastKeycode();
                     if (key >= 0) {
                         nut_press_key(nv, key);
@@ -109,6 +110,34 @@ void HPCalc::readKeys() {
                     delay = true;
                 }
             }
+        }
+    }
+}
+*/
+
+/*
+
+    normally we take one key from queue, if key >=0 then press the key, otherwise release any key pressed;
+
+    but if key == -1, it means that we first release all keys pressed, take a key, press it, or release any key pressed (which is pointless),
+    then skip next key handler call, delaying the process of next key by 500 nut cycles.
+
+    why do we need it? maybe it is used for simulating long-pressing a key. so I have decided that it is no longer necessary.
+    it could be remains of macros and nonsense from the iOS port.
+
+*/
+
+// here comes the new lite version.
+void HPCalc::readKeys() {
+    if (keyQueue.count()) {
+        int key = keyQueue.getLastKeycode();
+        //Serial.printf("readKeys Keycode: %d\n", key); //debug
+        keyQueue.removeLastKeycode();
+
+        if (key >= 0) {
+            nut_press_key(nv, key);
+        } else {
+            nut_release_key(nv);
         }
     }
 }

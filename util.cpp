@@ -57,6 +57,6 @@ void trim_trailing_whitespace (char *s)
 
 void exit (int ret)
 {
-  Serial.printf("\nProgram returned %d\n", ret);
-  while(1);  // dead loop
+	Serial.printf("Program returned %d\n\n", ret);
+	while(1);  // dead loop
 }
