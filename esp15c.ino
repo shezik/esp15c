@@ -27,7 +27,7 @@ void setup() {
         Serial.println("Failed to mount SPIFFS");
     }
 
-    setCpuFrequencyMhz(80);  // My devkit has a 40 MHz Xtal crystal
+    setCpuFrequencyMhz(240);  // My devkit has a 40 MHz Xtal crystal
     Serial.printf("CPU Freq: %d MHz\nXtal Freq: %d Mhz\nAPB Freq: %d Hz\n", getCpuFrequencyMhz(), getXtalFrequencyMhz(), getApbFrequency());
 
     u8g2.begin();
@@ -61,16 +61,6 @@ void loop() {
 void keyboardTick() {
 
     //Serial.printf("pin 34 state: %d\n", digitalRead(34));  //debug
-
-    /*
-    if (!digitalRead(34)) {
-        uint8_t keyData = keyboard.getKeyData();
-        uint8_t keycode = keyboard.toKeycode(keyData);
-        Serial.printf("\nProcessing keyboard input: \nkeyData: %d\nkeycode: %d\n\n", keyData, keycode);
-        emuInterface.processKeypress(keycode);
-        emuInterface.processKeypress(-1);
-    }
-    */
 
     static bool keyIsDown = false;
 

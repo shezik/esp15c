@@ -6,35 +6,6 @@ DispInterface::DispInterface(U8G2& u8g2_)
     // do nothing
 }
 
-/*
-void DispInterface::displayString(char *rawstr) {
-    char numbers[48 - 9 - 1];
-    char annunciators[9];
-    int i;
-
-    for (i = 0; i < (48 - 9 - 1); i++) {
-        numbers[i] = rawstr[i];
-
-        if (rawstr[i] = '_') {
-            numbers[i] = '\0';
-            break;
-        }
-    }
-
-    numbers[48 - 9 - 1 - 1] = '\0';  // if no underscore was found
-
-    i++;  // skip underscore
-
-    for (int j = 0; j < 9; j++) {
-        annunciators[j] = rawstr[i + j];
-
-        if (rawstr[i + j] = '\0') break;
-    }
-
-    u8g2.setFont(numFont);
-}
-*/
-
 // rawstr_[48] should be a valid string, I'm not gonna wipe that ass for you.
 void DispInterface::displayString(const char rawstr_[]) { 
 
@@ -132,7 +103,7 @@ char* DispInterface::parseDisplaySegments(segment_bitmap_t display_segments[]) {
         }
     }
 
-    disp[j++] = '_';
+    disp[j++] = '_';  // annunciator separator
 
     if (lowBat) {disp[j++] = 'L';}  // * (Low Battery Annunciator)
 
@@ -156,10 +127,11 @@ char* DispInterface::parseDisplaySegments(segment_bitmap_t display_segments[]) {
 
 }
 
+/*
 void DispInterface::display_callback(nut_reg_t *nv) {
     //Serial.printf("Going into %s!\n", __func__); //debug
 
-    segment_bitmap_t display_segments[MAX_DIGIT_POSITION];
+    segment_bitmap_t display_segments[MAX_DIGIT_POSITION];  // !! is this even required?
     static segment_bitmap_t last_segments[MAX_DIGIT_POSITION] = {'\0'};
     bool shouldUpdate = false;
 
@@ -177,5 +149,29 @@ void DispInterface::display_callback(nut_reg_t *nv) {
 
     Serial.println((*(DispInterface *)(nv->display)).parseDisplaySegments(display_segments));
     (*(DispInterface *)(nv->display)).displayString((*(DispInterface *)(nv->display)).parseDisplaySegments(display_segments));
+
+}
+*/
+
+void DispInterface::display_callback(nut_reg_t *nv) {
+    //Serial.printf("Going into %s!\n", __func__); //debug
+
+    static segment_bitmap_t last_segments[MAX_DIGIT_POSITION] = {'\0'};
+    bool shouldUpdate = false;
+
+    for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
+
+        if (nv->display_segments[i] != last_segments[i]) {
+            shouldUpdate = true;
+        }
+
+        last_segments[i] = nv->display_segments[i];
+    }
+
+    if (!shouldUpdate) return;
+
+    char *dispString = (*(DispInterface *)(nv->display)).parseDisplaySegments(nv->display_segments);
+    Serial.println(dispString);
+    (*(DispInterface *)(nv->display)).displayString(dispString);
 
 }
