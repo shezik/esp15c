@@ -9,7 +9,7 @@ DispInterface::DispInterface(U8G2& u8g2_)
 // rawstr_[48] should be a valid string, I'm not gonna wipe that ass for you.
 void DispInterface::displayString(const char rawstr_[]) { 
 
-    int i;
+    uint8_t i;
     int xOffset = annunciatorFontX;
     bool containsAnnunciators = false;
 
@@ -38,7 +38,7 @@ void DispInterface::displayString(const char rawstr_[]) {
 
         u8g2.setFont(annunciatorFont);
 
-        for (int j = 1; j < (9 + 1); j++) {  //  here comes danger of memory access violation since we intentionally skipped a '\0' (solved?)
+        for (uint8_t j = 1; j < (9 + 1); j++) {  //  here comes danger of memory access violation since we intentionally skipped a '\0' (solved?)
             if (rawstr[i + j] == '\0') break;
             switch (rawstr[i + j]) {
                 case 'L': u8g2.drawStr(xOffset,annunciatorFontY,"*");     xOffset += annunciatorFontWidth*1 + 2; break;
@@ -63,9 +63,9 @@ void DispInterface::displayString(const char rawstr_[]) {
 char* DispInterface::parseDisplaySegments(segment_bitmap_t display_segments[]) {
 
     static char disp[48];  // must be static; !! estimated value!
-    int j = 0;
+    uint8_t j = 0;
 
-    for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
+    for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
         switch (display_segments[i] & 0b01111111) {
             case 0b01000000: disp[j++] = '-'; break;
             case 0b00111111: disp[j++] = '0'; break;
@@ -107,7 +107,7 @@ char* DispInterface::parseDisplaySegments(segment_bitmap_t display_segments[]) {
 
     if (lowBat) {disp[j++] = 'L';}  // * (Low Battery Annunciator)
 
-    for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
+    for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
         switch (i) {
             case  2: if (display_segments[i] & ~0b000111111111) {disp[j++] = 'U';} break;  // User
             case  3: if (display_segments[i] & ~0b000111111111) {disp[j++] = 'f';} break;  // f
@@ -129,7 +129,6 @@ char* DispInterface::parseDisplaySegments(segment_bitmap_t display_segments[]) {
 
 /*
 void DispInterface::display_callback(nut_reg_t *nv) {
-    //Serial.printf("Going into %s!\n", __func__); //debug
 
     segment_bitmap_t display_segments[MAX_DIGIT_POSITION];  // !! is this even required?
     static segment_bitmap_t last_segments[MAX_DIGIT_POSITION] = {'\0'};
@@ -154,12 +153,11 @@ void DispInterface::display_callback(nut_reg_t *nv) {
 */
 
 void DispInterface::display_callback(nut_reg_t *nv) {
-    //Serial.printf("Going into %s!\n", __func__); //debug
 
     static segment_bitmap_t last_segments[MAX_DIGIT_POSITION] = {'\0'};
     bool shouldUpdate = false;
 
-    for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
+    for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
 
         if (nv->display_segments[i] != last_segments[i]) {
             shouldUpdate = true;
@@ -172,6 +170,36 @@ void DispInterface::display_callback(nut_reg_t *nv) {
 
     char *dispString = (*(DispInterface *)(nv->display)).parseDisplaySegments(nv->display_segments);
     Serial.println(dispString);
+
+    for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {  // debug
+        Serial.printf("%X ", nv->display_segments[i]);
+    }
+    Serial.printf("\n");
+
     (*(DispInterface *)(nv->display)).displayString(dispString);
+
+    /*
+    for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
+
+        if (!nv->display_segments[i]) continue;  // debug
+
+        for (uint8_t ptr = 0; ptr < 9; ptr++) {
+
+            if (nv->display_segments[i] & (1 << ptr)) {
+                switch (ptr) {
+
+                }
+            }
+
+        }
+
+        if (nv->display_segments[i] & 20000) {
+            switch (i) {
+
+            }
+        }
+
+    }
+    */
 
 }

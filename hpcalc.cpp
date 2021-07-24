@@ -24,8 +24,6 @@ void HPCalc::init() {
         // !! why do we need to toggle power state twice?
     }
 
-    nv->display = display;
-
 }
 
 void HPCalc::saveState() {
@@ -67,12 +65,10 @@ void HPCalc::tick(){
 }
 
 void HPCalc::updateDisplay() {
-    //Serial.printf("Going into %s!\n", __func__); //debug
     DispInterface::display_callback(nv);
 }
 
 void HPCalc::executeCycle() {
-    //Serial.printf("Going into %s!\n", __func__); //debug
     for (int i = 0; i < 500; i++) {
         nut_execute_instruction(nv);
     }
@@ -80,7 +76,6 @@ void HPCalc::executeCycle() {
 
 /*
 void HPCalc::readKeys() {
-    //Serial.printf("Going into %s!\n", __func__); //debug
     static bool delay = false;
     int key;
 
@@ -131,7 +126,6 @@ void HPCalc::readKeys() {
 void HPCalc::readKeys() {
     if (keyQueue.count()) {
         int key = keyQueue.getLastKeycode();
-        //Serial.printf("readKeys Keycode: %d\n", key); //debug
         keyQueue.removeLastKeycode();
 
         if (key >= 0) {

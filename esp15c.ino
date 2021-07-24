@@ -33,6 +33,7 @@ void setup() {
     u8g2.begin();
     u8g2.setContrast(224);
     u8g2.setFontMode(1);
+    u8g2.setBitmapMode(1);
 
     Serial.printf("Keyboard init result: %d\n", keyboard.init());
 
@@ -40,7 +41,7 @@ void setup() {
     //dispInterface.displayString("  LOADING");
     emuInterface.init();
 
-    Serial.printf("Initialization completed!\n");
+    Serial.printf("Initialized!\n");
 }
 
 void loop() {

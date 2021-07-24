@@ -1758,7 +1758,6 @@ bool nut_read_object_file (nut_reg_t *nut_reg, const char *filename)
 		if (oneline.length() > 79) continue;  // buffer is only 80 chars long
 		strcpy(buf, oneline.c_str());
 		trim_trailing_whitespace (buf);  // EOL characters and other useless stuff will be discarded here anyhow
-		//Serial.println(buf); //debug
 		if (! buf [0])
 			continue;
 		if (nut_parse_object_line (buf, & bank, & addr, & opcode))
@@ -1769,7 +1768,7 @@ bool nut_read_object_file (nut_reg_t *nut_reg, const char *filename)
 		}
     }
 	
-	Serial.printf("read %d words from '%s'\n", count, filename); //debug
+	Serial.printf("read %d words from '%s'\n", count, filename);
 	f.close();
 	return (true);
 }

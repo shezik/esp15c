@@ -31,7 +31,6 @@ void Kbd_8x5_CH450::stopComm() {
 }
 
 bool Kbd_8x5_CH450::writeByte(uint8_t data) {
-    //Serial.printf("Going into %s!\n", __func__); //debug
     for (int8_t i = 7; i > -1; i--) {
         if (data & (1 << i)) {
             digitalWrite(sda, HIGH);
@@ -57,7 +56,6 @@ bool Kbd_8x5_CH450::writeByte(uint8_t data) {
 }
 
 uint8_t Kbd_8x5_CH450::readByte() {
-    //Serial.printf("Going into %s!\n", __func__); //debug
     uint8_t data = 0;
     pinMode(sda, INPUT);
     for (int8_t i = 7; i > -1; i--) {
@@ -81,7 +79,6 @@ uint8_t Kbd_8x5_CH450::readByte() {
 }
 
 bool Kbd_8x5_CH450::init() {
-    //Serial.printf("Going into %s!\n", __func__); //debug
 
     pinMode(sda, OUTPUT);  // Always change pinMode back to OUTPUT state after fiddling 
     pinMode(scl, OUTPUT);  // with it (changing its mode). We assume it is at OUTPUT state by default.
@@ -97,7 +94,6 @@ bool Kbd_8x5_CH450::init() {
 }
 
 uint8_t Kbd_8x5_CH450::getKeyData() {
-    //Serial.printf("Going into %s!\n", __func__); //debug
     startComm();
     bool resultA = writeByte(0b01001111);  // magic byte to request key data
     uint8_t resultB = readByte();
