@@ -176,9 +176,8 @@ void DispInterface::display_callback(nut_reg_t *nv) {
     }
     Serial.printf("\n");
 
-    (*(DispInterface *)(nv->display)).displayString(dispString);
+    //(*(DispInterface *)(nv->display)).displayString(dispString);
 
-    /*
     for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
 
         if (!nv->display_segments[i]) continue;  // debug
@@ -200,6 +199,5 @@ void DispInterface::display_callback(nut_reg_t *nv) {
         }
 
     }
-    */
 
 }

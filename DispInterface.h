@@ -4,7 +4,7 @@
 
 // custom display settings
 #define numFont u8g2_font_t0_15_mr
-#define numFontWidth 9
+#define numFontWidth 8
 #define numFontX 2
 #define numFontY 30
 
@@ -17,6 +17,7 @@
 #include <Arduino.h>
 #include <U8g2lib.h>
 #include "proc_nut.h"  // nut_reg_t defined inside
+#include "CustomXBMFont.h"
 
 class DispInterface {
     private:
