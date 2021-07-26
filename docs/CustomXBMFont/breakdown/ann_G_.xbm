@@ -1,0 +1,4 @@
+#define G__width 5
+#define G__height 7
+static unsigned char G__bits[] = {
+   0x06, 0x09, 0x01, 0x01, 0x0d, 0x09, 0x06 };

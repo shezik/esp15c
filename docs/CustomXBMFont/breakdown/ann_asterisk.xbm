@@ -1,0 +1,4 @@
+#define asterisk_width 5
+#define asterisk_height 6
+static unsigned char asterisk_bits[] = {
+   0x00, 0x15, 0x0e, 0x04, 0x0e, 0x15 };

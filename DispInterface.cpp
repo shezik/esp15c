@@ -127,30 +127,58 @@ char* DispInterface::parseDisplaySegments(segment_bitmap_t display_segments[]) {
 
 }
 
-/*
-void DispInterface::display_callback(nut_reg_t *nv) {
+void DispInterface::drawSegments(segment_bitmap_t display_segments[]) {
 
-    segment_bitmap_t display_segments[MAX_DIGIT_POSITION];  // !! is this even required?
-    static segment_bitmap_t last_segments[MAX_DIGIT_POSITION] = {'\0'};
-    bool shouldUpdate = false;
+    uint8_t xOffset;
 
-    for (int i = 0; i < MAX_DIGIT_POSITION; i++) {
-        display_segments[i] = nv->display_segments[i];
+    u8g2.clearBuffer();
 
-        if (display_segments[i] != last_segments[i]) {
-            shouldUpdate = true;
+    for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
+
+        if (i != 0 && !display_segments[i]) continue;
+
+        xOffset = numSpacing * i;
+
+        for (uint8_t ptr = 0; ptr < 9; ptr++) {
+            if (display_segments[i] & (1 << ptr)) {
+                switch (ptr) {
+                    case 0: u8g2.drawXBM(XBMX + xOffset + seg_width * i, XBMY, seg_width, seg_height, seg_A_bits); break;
+                    case 1: u8g2.drawXBM(XBMX + xOffset + seg_width * i, XBMY, seg_width, seg_height, seg_B_bits); break;
+                    case 2: u8g2.drawXBM(XBMX + xOffset + seg_width * i, XBMY, seg_width, seg_height, seg_C_bits); break;
+                    case 3: u8g2.drawXBM(XBMX + xOffset + seg_width * i, XBMY, seg_width, seg_height, seg_D_bits); break;
+                    case 4: u8g2.drawXBM(XBMX + xOffset + seg_width * i, XBMY, seg_width, seg_height, seg_E_bits); break;
+                    case 5: u8g2.drawXBM(XBMX + xOffset + seg_width * i, XBMY, seg_width, seg_height, seg_F_bits); break;
+                    case 6: u8g2.drawXBM(XBMX + xOffset + seg_width * i, XBMY, seg_width, seg_height, seg_G_bits); break;
+                    case 7: u8g2.drawXBM(XBMX + xOffset + seg_width * (i + 1) - comma_width + point_width + commaOffset, XBMY + seg_height - point_height, comma_width, comma_height, seg_H_bits); break;
+                    case 8: u8g2.drawXBM(XBMX + xOffset + seg_width * (i + 1) - comma_width + point_width + commaOffset, XBMY + seg_height - point_height, comma_width, comma_height, seg_I_bits); break;
+                    // call this CSS, I don't mind.
+                }
+            }
         }
-        last_segments[i] = display_segments[i];
+
+        if (display_segments[i] & ~511) {
+            switch (i) {
+                case  2: u8g2.drawXBM(XBMX + asterisk_width                                                                                              + 1 * annSpacing, XBMY + seg_height + annDistance, USER_width,  USER_height,  USER_bits);  break;
+                case  3: u8g2.drawXBM(XBMX + asterisk_width + USER_width                                                                                 + 2 * annSpacing, XBMY + seg_height + annDistance, f_width,     f_height,     f_bits);     break;
+                case  4: u8g2.drawXBM(XBMX + asterisk_width + USER_width + f_width                                                                       + 3 * annSpacing, XBMY + seg_height + annDistance, g_width,     g_height,     g_bits);     break;
+                case  5: u8g2.drawXBM(XBMX + asterisk_width + USER_width + f_width + g_width                                                             + 4 * annSpacing, XBMY + seg_height + annDistance, BEGIN_width, BEGIN_height, BEGIN_bits); break;
+                case  6: u8g2.drawXBM(XBMX + asterisk_width + USER_width + f_width + g_width + BEGIN_width                                               + 5 * annSpacing, XBMY + seg_height + annDistance, G__width,    G__height,    G__bits);    break;
+                case  7: u8g2.drawXBM(XBMX + asterisk_width + USER_width + f_width + g_width + BEGIN_width + G__width                                    + 5 * annSpacing, XBMY + seg_height + annDistance, _RAD_width,  _RAD_height,  _RAD_bits);  break;
+                case  8: u8g2.drawXBM(XBMX + asterisk_width + USER_width + f_width + g_width + BEGIN_width + G__width + _RAD_width                       + 6 * annSpacing, XBMY + seg_height + annDistance, DMY_width,   DMY_height,   DMY_bits);   break;
+                case  9: u8g2.drawXBM(XBMX + asterisk_width + USER_width + f_width + g_width + BEGIN_width + G__width + _RAD_width + DMY_width           + 7 * annSpacing, XBMY + seg_height + annDistance, C_width,     C_height,     C_bits);     break;
+                case 10: u8g2.drawXBM(XBMX + asterisk_width + USER_width + f_width + g_width + BEGIN_width + G__width + _RAD_width + DMY_width + C_width + 8 * annSpacing, XBMY + seg_height + annDistance, PRGM_width,  PRGM_height,  PRGM_bits);  break;
+            }
+        }
+
+        if (lowBat && i == 0) {
+            u8g2.drawXBM(XBMX, XBMY + seg_height + annDistance, asterisk_width, asterisk_height, asterisk_bits);
+        }
+
     }
 
-    if (!shouldUpdate) return;
-
-
-    Serial.println((*(DispInterface *)(nv->display)).parseDisplaySegments(display_segments));
-    (*(DispInterface *)(nv->display)).displayString((*(DispInterface *)(nv->display)).parseDisplaySegments(display_segments));
+    u8g2.sendBuffer();
 
 }
-*/
 
 void DispInterface::display_callback(nut_reg_t *nv) {
 
@@ -168,36 +196,20 @@ void DispInterface::display_callback(nut_reg_t *nv) {
 
     if (!shouldUpdate) return;
 
+#ifdef USE_DISPLAY_STRING
     char *dispString = (*(DispInterface *)(nv->display)).parseDisplaySegments(nv->display_segments);
     Serial.println(dispString);
 
+    /*
     for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {  // debug
         Serial.printf("%X ", nv->display_segments[i]);
     }
     Serial.printf("\n");
+    */
 
-    //(*(DispInterface *)(nv->display)).displayString(dispString);
-
-    for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
-
-        if (!nv->display_segments[i]) continue;  // debug
-
-        for (uint8_t ptr = 0; ptr < 9; ptr++) {
-
-            if (nv->display_segments[i] & (1 << ptr)) {
-                switch (ptr) {
-
-                }
-            }
-
-        }
-
-        if (nv->display_segments[i] & 20000) {
-            switch (i) {
-
-            }
-        }
-
-    }
+    (*(DispInterface *)(nv->display)).displayString(dispString);
+#else
+    (*(DispInterface *)(nv->display)).drawSegments(nv->display_segments);
+#endif
 
 }
