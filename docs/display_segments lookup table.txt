@@ -7,7 +7,7 @@
   &127: ---- ---- ---- ---- ---- ---- -yyy yyyy
   &128: ---- ---- ---- ---- ---- ---- y--- ---- '.'
  &~511: yyyy yyyy yyyy yyyy yyyy yyy- ---- ---- annunciators
-&20000: ---- ---- ---- --y- ---- ---- ---- ---- annunciators?
+&20000: ---- ---- ---- --y- ---- ---- ---- ---- annunciators? (not reliable)
          in given segment, if &~511 is not zero, show:
          3rd:USER   4th:f    5th:g  6th:BEGIN 7th:G(RAD)
          8th:(G)RAD 9th:D.MY 10th:C 11th:PRGM

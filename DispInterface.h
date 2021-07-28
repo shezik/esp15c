@@ -13,12 +13,14 @@
 #define annunciatorFontX 2
 #define annunciatorFontY 45
 
-#define XBMX 3          // coord X of first character
-#define XBMY 20         // coord Y of first character
-#define numSpacing 0    // spacing between numbers, better >= comma_width if you have a large enough screen.
-#define commaOffset -2  // better be 1, depending on the font being used or screen size.
-#define annSpacing 1    // spacing between annunciators, better >= 2
+  // optimized for 128x64 LCDs and CustomXBMFont. It'd be great if you have a 192x64 or wider display.
+#define XBMX 0          // coord X of first character
+#define XBMY 23         // coord Y of first character
+#define numSpacing 2    // spacing between numbers, better >= point_width + commaOffset, if possible.
+#define commaOffset -1  // better be 0 or 1, depending on the font being used or screen size.
+#define annSpacing 2    // spacing between annunciators (including minus sign), better >= 2
 #define annDistance 2   // distance between top of annunciator and bottom of number
+#define arrayOffset 1   // display_segments[i + arrayOffset], self-explanatory. product of insufficient space.
 
 
 #include <Arduino.h>

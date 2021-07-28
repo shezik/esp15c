@@ -1,0 +1,4 @@
+#define ann_minus_width 9
+#define ann_minus_height 2
+static unsigned char ann_minus_bits[] = {
+   0xfc, 0x01, 0xfc, 0x01 };

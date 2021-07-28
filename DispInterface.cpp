@@ -133,14 +133,25 @@ void DispInterface::drawSegments(segment_bitmap_t display_segments[]) {
 
     u8g2.clearBuffer();
 
-    for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
 
-        if (i != 0 && !display_segments[i]) continue;
+    // handle digit 0 separately
+    if (display_segments[0] & (1 << 6)) {
+        u8g2.drawXBM(XBMX, XBMY - minus_height - annDistance, minus_width, minus_height, minus_bits);
+    }
+
+    if (lowBat) {
+        u8g2.drawXBM(XBMX, XBMY + seg_height + annDistance, asterisk_width, asterisk_height, asterisk_bits);
+    }
+
+
+    for (uint8_t i = 0; i < MAX_DIGIT_POSITION - arrayOffset; i++) {
+
+        if (/*i != 0 && */!display_segments[i + arrayOffset]) continue;
 
         xOffset = numSpacing * i;
 
         for (uint8_t ptr = 0; ptr < 9; ptr++) {
-            if (display_segments[i] & (1 << ptr)) {
+            if (display_segments[i + arrayOffset] & (1 << ptr)) {
                 switch (ptr) {
                     case 0: u8g2.drawXBM(XBMX + xOffset + seg_width * i, XBMY, seg_width, seg_height, seg_A_bits); break;
                     case 1: u8g2.drawXBM(XBMX + xOffset + seg_width * i, XBMY, seg_width, seg_height, seg_B_bits); break;
@@ -170,9 +181,11 @@ void DispInterface::drawSegments(segment_bitmap_t display_segments[]) {
             }
         }
 
+        /*
         if (lowBat && i == 0) {
             u8g2.drawXBM(XBMX, XBMY + seg_height + annDistance, asterisk_width, asterisk_height, asterisk_bits);
         }
+        */
 
     }
 
