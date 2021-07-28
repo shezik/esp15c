@@ -1,9 +1,9 @@
 #include "Kbd_8x5_CH450.h"
 
-Kbd_8x5_CH450::Kbd_8x5_CH450(uint8_t sda_, uint8_t scl_, unsigned int freq_)
+Kbd_8x5_CH450::Kbd_8x5_CH450(uint8_t sda_, uint8_t scl_, unsigned int freq_ = 5000)
     : sda(sda_)
     , scl(scl_)
-    , freq(freq_)
+    , delayms(500 / freq_)
 {
     // do nothing
 }
@@ -14,9 +14,9 @@ void Kbd_8x5_CH450::startComm() {
     digitalWrite(scl, HIGH);
     //delay(10);
     digitalWrite(sda, LOW);
-    delay(0.1);
+    delay(delayms);
     digitalWrite(scl, LOW);
-    //delay(10);
+    delay(delayms);
 }
 
 void Kbd_8x5_CH450::stopComm() {
@@ -25,9 +25,9 @@ void Kbd_8x5_CH450::stopComm() {
     digitalWrite(sda, LOW);
     //delay(10);
     digitalWrite(scl, HIGH);  // stays high during inactive?
-    //delay(10);
+    delay(delayms);
     digitalWrite(sda, HIGH);
-    //delay(10);
+    delay(delayms);
 }
 
 bool Kbd_8x5_CH450::writeByte(uint8_t data) {
@@ -39,19 +39,20 @@ bool Kbd_8x5_CH450::writeByte(uint8_t data) {
         }
         //delay(10);
         digitalWrite(scl, HIGH);
-        delay(0.1);
+        delay(delayms);
         digitalWrite(scl, LOW);
-        delay(0.1);
+        delay(delayms);
     }
     pinMode(sda, INPUT);
     digitalWrite(scl, HIGH);
-    delay(0.1);
+    delay(delayms);
     bool result = digitalRead(sda);
     //delay(10);
     digitalWrite(scl, LOW);
-    pinMode(sda, OUTPUT);  // terminal state: sda = low, scl = low
+    pinMode(sda, OUTPUT);
+    digitalWrite(sda, LOW);  // terminal state: sda = low, scl = low
     //Serial.printf("writeByte result is %d\n", result); //debug
-    delay(0.1);  // !!
+    delay(delayms);  // !!
     return result;
 }
 
@@ -60,21 +61,21 @@ uint8_t Kbd_8x5_CH450::readByte() {
     pinMode(sda, INPUT);
     for (int8_t i = 7; i > -1; i--) {
         digitalWrite(scl, HIGH);
-        delay(0.1);
+        delay(delayms);
         if (digitalRead(sda)) {
             //Serial.println("We've got something"); //debug
             data |= (1 << i);
         }
         digitalWrite(scl, LOW);
-        delay(0.1);
+        delay(delayms);
     }
     pinMode(sda, OUTPUT);
     digitalWrite(sda, HIGH);
     //delay(10);
     digitalWrite(scl, HIGH);
-    delay(0.1);
+    delay(delayms);
     digitalWrite(scl, LOW);
-    //delay(10);
+    delay(delayms);
     return data;
 }
 

@@ -8,7 +8,7 @@ class Kbd_8x5_CH450 {
     private:
         uint8_t sda;
         uint8_t scl;
-        unsigned int freq;  // currently useless
+        float delayms;
         void startComm();
         void stopComm();
         bool writeByte(uint8_t data);
