@@ -8,7 +8,7 @@ int KeyQueue::getLastKeycode() {
     if (availableKeys > 0){
         return queue[availableKeys - 1];
     }
-    return 0;  // Please, check if there is any keycode left in the queue
+    return -1;  // Please, check if there is any keycode left in the queue
                // before calling this, to avoid getting false results!
 }
 

@@ -197,29 +197,27 @@ void DispInterface::display_callback(nut_reg_t *nv) {
 
     static segment_bitmap_t last_segments[MAX_DIGIT_POSITION] = {'\0'};
     static bool last_lowBat = false;
-    bool shouldUpdate = false;
+    bool lowBatChanged = false;
+    bool segmentsChanged = false;
 
     if (last_lowBat != (*(DispInterface *)(nv->display)).lowBat) {
-
         last_lowBat = (*(DispInterface *)(nv->display)).lowBat;
-        shouldUpdate = true;
-        
-    } else {
-
-        for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
-
-            if (shouldUpdate == false && (nv->display_segments[i] != last_segments[i])) {
-                shouldUpdate = true;
-            }
-
-            if (shouldUpdate == true) {  // starts from where is different
-                last_segments[i] = nv->display_segments[i];
-            }
-        }
-
+        lowBatChanged = true;
     }
 
-    if (!shouldUpdate) return;
+    for (uint8_t i = 0; i < MAX_DIGIT_POSITION; i++) {
+
+        if (segmentsChanged == false && (nv->display_segments[i] != last_segments[i])) {
+            segmentsChanged = true;
+        }
+
+        if (segmentsChanged == true) {  // starts from where is different
+            last_segments[i] = nv->display_segments[i];
+        }
+    
+    }
+
+    if (!(segmentsChanged || lowBatChanged)) return;
 
 #ifdef USE_DISPLAY_STRING
     char *dispString = (*(DispInterface *)(nv->display)).parseDisplaySegments(nv->display_segments);
