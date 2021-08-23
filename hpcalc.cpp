@@ -51,15 +51,10 @@ void HPCalc::processKeypress(int code) {
     keyQueue.queueKeycode(code);
 }
 
-bool HPCalc::keyBufferIsEmpty() {
-    return keyQueue.count() > 0 ? false : true;
-}
-
 void HPCalc::tick(){
     static bool shouldUpdateDisplay = true;
     readKeys();
     executeCycle();
-    updateDisplay();
     if (shouldUpdateDisplay) updateDisplay();
     shouldUpdateDisplay = !shouldUpdateDisplay;
 }
@@ -68,8 +63,8 @@ void HPCalc::updateDisplay() {
     DispInterface::display_callback(nv);
 }
 
-void HPCalc::executeCycle() {
-    for (int i = 0; i < 500; i++) {
+void HPCalc::executeCycle(unsigned int count = 500) {
+    for (unsigned int i = 0; i < count; i++) {
         nut_execute_instruction(nv);
     }
 }

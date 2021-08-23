@@ -9,7 +9,7 @@ int KeyQueue::getLastKeycode() {
         return queue[availableKeys - 1];
     }
     return -1;  // Please, check if there is any keycode left in the queue
-               // before calling this, to avoid getting false results!
+                // before calling this, to avoid getting false results!
 }
 
 void KeyQueue::removeLastKeycode() {

@@ -21,10 +21,9 @@ class HPCalc {
         void saveState();
         bool loadState();
         void processKeypress(int code);
-        bool keyBufferIsEmpty();
         void tick();
         void updateDisplay();
-        void executeCycle();
+        void executeCycle(unsigned int count = 500);
         void readKeys();
 };
 
