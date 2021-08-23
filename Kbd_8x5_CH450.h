@@ -23,7 +23,7 @@ class Kbd_8x5_CH450 {
                                            { 24,  56, 120, 200, 53} };  // customize it yourself depending on your wirings
     public:
         bool keyIsDown = false;
-        Kbd_8x5_CH450(uint8_t sda_, uint8_t scl_, unsigned int freq_);
+        Kbd_8x5_CH450(uint8_t sda_, uint8_t scl_, unsigned int freq_ = 5000);
         bool init();
         uint8_t getKeyData();
         bool toState(uint8_t rawdata);

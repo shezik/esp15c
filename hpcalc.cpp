@@ -63,7 +63,7 @@ void HPCalc::updateDisplay() {
     DispInterface::display_callback(nv);
 }
 
-void HPCalc::executeCycle(unsigned int count = 500) {
+void HPCalc::executeCycle(unsigned int count) {
     for (unsigned int i = 0; i < count; i++) {
         nut_execute_instruction(nv);
     }

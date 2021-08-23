@@ -1,6 +1,6 @@
 #include "Kbd_8x5_CH450.h"
 
-Kbd_8x5_CH450::Kbd_8x5_CH450(uint8_t sda_, uint8_t scl_, unsigned int freq_ = 5000)
+Kbd_8x5_CH450::Kbd_8x5_CH450(uint8_t sda_, uint8_t scl_, unsigned int freq_)
     : sda(sda_)
     , scl(scl_)
     , delayms(500 / freq_)
